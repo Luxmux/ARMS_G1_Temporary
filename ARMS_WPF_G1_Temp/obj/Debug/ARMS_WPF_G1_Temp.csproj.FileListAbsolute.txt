@@ -1,8 +1,6 @@
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\ARMS_WPF_G1_Temp.csprojAssemblyReference.cache
-C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Modulation.baml
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Communications.baml
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Logging.g.cs
-C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Modulation.g.cs
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\About.g.cs
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Communications.g.cs
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Debug\Admin.g.cs

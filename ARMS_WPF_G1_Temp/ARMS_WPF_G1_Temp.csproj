@@ -68,9 +68,6 @@
     <Compile Include="Logging.xaml.cs">
       <DependentUpon>Logging.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modulation.xaml.cs">
-      <DependentUpon>Modulation.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Admin.xaml.cs">
       <DependentUpon>Admin.xaml</DependentUpon>
     </Compile>
@@ -85,10 +82,6 @@
     <Page Include="Logging.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modulation.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="About.xaml">
       <Generator>MSBuild:Compile</Generator>

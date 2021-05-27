@@ -77,21 +77,21 @@
         <Label Content="Software Version:" x:Name="SoftwareVersionLabel" FontFamily="Calibri" FontSize="13"  HorizontalAlignment="Left" Margin="22,249,0,0" VerticalAlignment="Top"  Height="25" Width="302" Grid.ColumnSpan="2"/>
         <Border BorderThickness="1" BorderBrush="Gray" Margin="221,64,18,170" Grid.Column="1" />
         <Label Content="Capabilities" HorizontalAlignment="Left" Margin="231,50,0,0" VerticalAlignment="Top" Background="#f0f0f0" Grid.Column="1"/>
-        <Label Content="SLED Wavelength" HorizontalAlignment="Left" Margin="231,78,0,0" VerticalAlignment="Top" Grid.Column="1" />
+        <Label Content="BlackBody Lamp" HorizontalAlignment="Left" Margin="231,78,0,0" VerticalAlignment="Top" Grid.Column="1" />
         <Label Content="N/A" x:Name="SLED1" HorizontalAlignment="Left" Margin="338,79,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
-        <Label Content="SLED TEC" HorizontalAlignment="Left" Margin="231,105,0,0" VerticalAlignment="Top" Grid.Column="1" />
-        <Label Content="Heat Sink Temp" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,131,0,0" Grid.Column="1"/>
         <Label Content="Power Meter" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,158,0,0" Grid.Column="1"/>
-        <Label Content="Firmware Version" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,185,0,0" Grid.Column="1"/>
-        <Label Content="Mac Address" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,212,0,0" Grid.Column="1"/>
-        <Label Content="N/A" x:Name="SLED_TEC" HorizontalAlignment="Left" Margin="338,105,0,0" VerticalAlignment="Top"  Height="26" Width="200" Grid.Column="1"/>
-        <Label Content="N/A" x:Name="Heat_Sink_Temp" HorizontalAlignment="Left" Margin="338,131,0,0" VerticalAlignment="Top"  Height="26" Width="200" Grid.Column="1"/>
+        <Label Content="Firmware Version" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,210,0,0" Grid.Column="1"/>
         <Label Content="N/A" x:Name="Power_Meter" HorizontalAlignment="Left" Margin="338,159,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
-        <Label Content="N/A" x:Name="Firmware_Version" HorizontalAlignment="Left" Margin="338,184,0,0" VerticalAlignment="Top"  Height="28" Width="200" Grid.Column="1"/>
-        <Label Content="N/A" x:Name="Mac_Address" HorizontalAlignment="Left" Margin="338,213,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
-        <Button x:Name="NewDiagnosticFile" FontFamily="Calibri" FontSize="11" Click="NewDiagnosticFile_Click" Content="Create New Diagnostic File (.csv)" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="164" Margin="615,269,0,0" VerticalAlignment="Top" Grid.Column="1"  />
+        <Label Content="N/A" x:Name="Firmware_Version" HorizontalAlignment="Left" Margin="338,209,0,0" VerticalAlignment="Top"  Height="28" Width="200" Grid.Column="1"/>
         <Button x:Name="Close_But" FontFamily="Calibri" FontSize="11" Click="CloseBut_Click" Content="Close" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="82" Margin="697,304,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <TextBox x:Name="filepath" Text="[Please choose path to create new diagnostic file]" FontFamily="Calibri" FontSize="11" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="220,269,0,0" VerticalAlignment="Top"  Height="23" Width="391" Grid.Column="1"/>
+        <Label Content="Power Meter" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,158,0,0" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Power_Meter_Copy" HorizontalAlignment="Left" Margin="338,159,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Label Content="Power Meter" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="232,134,0,0" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Power_Meter_Copy1" HorizontalAlignment="Left" Margin="339,135,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Label Content="Gas 1" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,108,0,0" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Power_Meter_Copy2" HorizontalAlignment="Left" Margin="338,109,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Label Content="Power Meter" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,187,0,0" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Power_Meter_Copy3" HorizontalAlignment="Left" Margin="338,188,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
     </Grid>
 
 

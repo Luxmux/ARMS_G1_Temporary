@@ -43,6 +43,7 @@ namespace ARMS_WPF_G1_Temp
         private int mode;
         private int sTECOn;
         private int sledsAreOn;
+        private int lampEnable;
         private double sled1CurrentSetpoint;
         private double sled1CurrentSetpointRaw;
         private double sled2CurrentSetpoint;
@@ -79,14 +80,13 @@ namespace ARMS_WPF_G1_Temp
         private double sledTECSTempSetpointDefaultBoot;
         private double sledTECSTempSetpointDefaultRealtimeRaw;
         private double sledTECSTempSetpointDefaultRealtime;
-        private double heatSinkSetpointRead;
-        private double heatSinkSetpointReadRaw;
+
         private double oSEBodyTemp;
         private double oSEBodyTempRaw;
         private double oSEBodyCurr;
         private double oSEBodyCurrRaw;
         private double oSEHeatOrCool;
-        private int posOrNegHeatSink;
+
         private double sledTECCurr;
         private double sledTECCurrRaw;
         private int sledTECCurrentRawLogString;
@@ -98,6 +98,14 @@ namespace ARMS_WPF_G1_Temp
         private double sledTECCapacityDefault;
         private double fanSpeedReadRaw;
         private double fanSpeed;
+        private int gas1Raw;
+        private double gas1;
+        private int gas2Raw;
+        private double gas2;
+        private int gas3Raw;
+        private double gas3;
+        private int gas4Raw;
+        private double gas4;
         private double sledTECFactoryDefaultTemp;
         private int existingModbusID;
         private string existingIP;
@@ -116,11 +124,11 @@ namespace ARMS_WPF_G1_Temp
         private double existingManCurr5;
         private double existingManCurr6;
         private double sledTECTempRaw;
-        private double heatSinkTempRaw;
+        private double thermopileTempRaw;
         private int currentMode;
         private bool editingSledTECTemp;
         private double sledTECTemp;
-        private double heatSinkTemp;
+        private double thermopileTemp;
 
         private int oSEBodyTECTimeConstantDefaultBootRaw;
         private double oSEBodyTECTimeConstantDefaultBoot;
@@ -555,10 +563,10 @@ namespace ARMS_WPF_G1_Temp
             set { oSEBodyTECKiRealtime = value; }
         }
 
-        public double HeatSinkTemp
+        public double ThermopileTemp
         {
-            get { return heatSinkTemp; }
-            set { heatSinkTemp = value; }
+            get { return thermopileTemp; }
+            set { thermopileTemp = value; }
         }
         public double SledTECTemp
         {
@@ -576,10 +584,10 @@ namespace ARMS_WPF_G1_Temp
             get { return currentMode; }
             set { currentMode = value; }
         }
-        public double HeatSinkTempRaw
+        public double ThermopileTempRaw
         {
-            get { return heatSinkTempRaw; }
-            set { heatSinkTempRaw = value; }
+            get { return thermopileTempRaw; }
+            set { thermopileTempRaw = value; }
         }
         public double ExistingManCurr1
         {
@@ -682,6 +690,54 @@ namespace ARMS_WPF_G1_Temp
             set { fanSpeed = value; }
 
         }
+
+        public int Gas1Raw
+        {
+            get { return gas1Raw; }
+            set { gas1Raw = value; }
+
+        }
+        public double Gas1
+        {
+            get { return gas1; }
+            set { gas1 = value; }
+        }
+        public int Gas2Raw
+        {
+            get { return gas2Raw; }
+            set { gas2Raw = value; }
+
+        }
+        public double Gas2
+        {
+            get { return gas2; }
+            set { gas2 = value; }
+
+        }
+        public int Gas3Raw
+        {
+            get { return gas3Raw; }
+            set { gas3Raw = value; }
+
+        }
+        public double Gas3
+        {
+            get { return gas3; }
+            set { gas3 = value; }
+
+        }
+        public int Gas4Raw
+        {
+            get { return gas4Raw; }
+            set { gas4Raw = value; }
+
+        }
+        public double Gas4
+        {
+            get { return gas4; }
+            set { gas4 = value; }
+
+        }
         public double SledTECCapacityDefaultRaw
         {
             get { return sledTECCapacityDefaultRaw; }
@@ -732,12 +788,7 @@ namespace ARMS_WPF_G1_Temp
             set { sledTECCurrRaw = value; }
         }
 
-        public int PosOrNegHeatSink
-        {
-            get { return posOrNegHeatSink; }
-            set { posOrNegHeatSink = value; }
-
-        }
+   
         public double OSEBodyTemp
         {
             get { return oSEBodyTemp; }
@@ -764,16 +815,6 @@ namespace ARMS_WPF_G1_Temp
             set { oSEHeatOrCool = value; }
         }
 
-        public double HeatSinkSetpointRead
-        {
-            get { return heatSinkSetpointRead; }
-            set { heatSinkSetpointRead = value; }
-        }
-        public double HeatSinkSetpointReadRaw
-        {
-            get { return heatSinkSetpointReadRaw; }
-            set { heatSinkSetpointReadRaw = value; }
-        }
 
         public double SledTECSTempSetpointDefaultRealtimeRaw
         {
@@ -995,6 +1036,12 @@ namespace ARMS_WPF_G1_Temp
             get { return sledsAreOn; }
             set { sledsAreOn = value; }
         }
+        public int LampEnable
+        {
+            get { return lampEnable; }
+            set { lampEnable = value; }
+        }
+
 
         public int STECOn
         {
