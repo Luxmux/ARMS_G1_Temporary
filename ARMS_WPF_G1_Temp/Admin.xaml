@@ -1,0 +1,395 @@
+﻿<Window x:Class="ARMS_WPF_G1_Temp.Admin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARMS_WPF_G1_Temp"
+        mc:Ignorable="d"
+        Title="ARMS WPF Temp - Admin" Height="806.5" Width="1225.5" Icon="icon.jpg" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#000000"/>
+            <Setter Property="Background" Value="#e6e7e4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1" BorderBrush= "Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#d0d0d0"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#394969"/>
+                    <Setter Property="Background" Value="#b9b9b9"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+
+
+        <Style x:Key="RegularTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border  Name="Border" BorderBrush="Black" BorderThickness="1" >
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#e6e7e4"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="SlateGray"/>
+                                <Setter Property="Foreground" Value="#494949"/>
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="WHITE"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
+                                <Setter Property="Foreground" Value="black"/>
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="HeatorCoolTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--<Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>-->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="dayTimeSlider"  TargetType="{x:Type Slider}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+
+                            <!-- TickBars are collapsed (invisible) by default) -->
+                            <TickBar Grid.Column="0" Name="LeftTick" 
+                             Width="10" Placement="Left" Visibility="Collapsed"  
+                             Fill="{TemplateBinding Foreground}" />
+                            <TickBar   Name="RightTick" 
+                             Width="10" Placement="Right" Visibility="Collapsed"  
+                             Fill="{TemplateBinding Foreground}" />
+
+                            <Track Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseLarge">
+                                        <RepeatButton.Style>
+                                            <Style TargetType="{x:Type RepeatButton}">
+                                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                <Setter Property="Background" Value="#2259FF"/>
+                                                <Setter Property="BorderBrush" Value="#2259FF"/>
+                                                <Setter Property="Opacity" Value="0.7"/>
+                                                <Setter Property="Command" Value="Slider.DecreaseLarge"/>
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                            <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#2259FF"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Background" Value="#b9b9b9"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </RepeatButton.Style>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseLarge">
+                                        <RepeatButton.Style>
+                                            <Style TargetType="{x:Type RepeatButton}">
+                                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                <Setter Property="Background" Value="#F5F5F5"/>
+                                                <Setter Property="BorderBrush" Value="#F5F5F5"/>
+                                                <Setter Property="Opacity" Value="0"/>
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                            <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F5F5F5"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </RepeatButton.Style>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Style>
+                                            <Style TargetType="Thumb">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Canvas SnapsToDevicePixels="true">
+                                                                <Grid Height="42" Width="15">
+                                                                    <Border x:Name="Background" Background="#a2a2a2" BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
+                                                                            CornerRadius="5,5,5,5" Height="42" Width="15" BorderBrush="Black" Opacity="90">
+                                                                    </Border>
+
+                                                                    <TextBlock HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        Foreground="Black"
+                                                                        FontSize="9"
+                                                                        Text="{Binding Value, RelativeSource={RelativeSource AncestorType={x:Type Slider}}, StringFormat={}{0:N1}}">
+                                                                        <TextBlock.LayoutTransform>
+                                                                            <RotateTransform Angle="90" />
+                                                                        </TextBlock.LayoutTransform>
+                                                                    </TextBlock>
+                                                                </Grid>
+                                                            </Canvas>
+
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+
+
+
+
+                                                </Setter>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+
+
+        </Style>
+
+
+
+    </Window.Resources>
+
+
+    <Grid Margin="-26,1,6,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="371"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="209*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="505" Margin="694,209,0,0" Stroke="Black" VerticalAlignment="Top" Width="260" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="505" Margin="95,209,0,0" Stroke="Black" VerticalAlignment="Top" Width="260" Grid.Column="1"/>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="185" Margin="38,13,0,0" Stroke="Black" VerticalAlignment="Top" Width="371"/>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="404" Margin="38,208,0,0" Stroke="Black" VerticalAlignment="Top" Width="371"/>
+        <Rectangle Fill="WhiteSmoke" Height="185" Margin="425,13,0,0" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="260"/>
+        <Label Content="SLED (mA)" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="598,38,0,0" Width="64" Height="26"/>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="506" Margin="425,208,0,0" Stroke="Black" VerticalAlignment="Top" Width="260"/>
+        <Label x:Name="SLEDTECTempSetpointDefaultLabel" Content="SLED TEC Temperature &#xA;Setpoint Default Boot" HorizontalAlignment="Left" Margin="434,243,0,0" VerticalAlignment="Top" Height="47" Width="199"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECTempSetpointDefaultBox"   HorizontalAlignment="Left" Margin="579,254,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label Content="SLED TEC" HorizontalAlignment="Left" Margin="434,216,0,0" VerticalAlignment="Top" Height="25" Width="245" FontWeight="Bold"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"   x:Name="CurrSenseRaw1Edit" HorizontalAlignment="Left"  TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Margin="588,70,0,0" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"   x:Name="CurrSenseCalc1Edit" HorizontalAlignment="Left"  Margin="588,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"   x:Name="MonDiodeCalc1Edit" HorizontalAlignment="Left"  Margin="588,151,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"   x:Name="MonDiodeRaw1Edit" HorizontalAlignment="Left"  Margin="588,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Height="18" />
+        <Label Content="Current Sense Raw" HorizontalAlignment="Left" Margin="435,66,0,0" VerticalAlignment="Top"  Width="116" Height="26" />
+        <Label Content="Current Sense Calculated" HorizontalAlignment="Left" Margin="435,94,0,0" VerticalAlignment="Top"  Width="153" Height="26" />
+        <Label Content="Mon Diode Raw"  HorizontalAlignment="Left" Margin="435,120,0,0" VerticalAlignment="Top"  Width="106" Height="26" />
+        <Label Content="Mon Diode Calculated" HorizontalAlignment="Left" Margin="435,147,0,0" VerticalAlignment="Top"  Width="139" Height="26" />
+        <Label x:Name="SLEDTECTempSetpointDefaultRaw" FontSize="9" Content="--" HorizontalAlignment="Left" Margin="579,270,0,0" VerticalAlignment="Top"  Width="81" Height="22" />
+        <Label x:Name="SLEDTECTempSetpointRealtimeLabel" Content="SLED TEC Temperature &#xA;Setpoint Realtime" HorizontalAlignment="Left" Margin="434,292,0,0" VerticalAlignment="Top" Height="47" Width="199"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECTempSetpointRealtimeBox"   HorizontalAlignment="Left" Margin="579,303,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECTempSetpointRealtimeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="579,317,0,0" VerticalAlignment="Top"  Width="82" Height="22" />
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="183" Margin="694,14,0,0" Stroke="Black" VerticalAlignment="Top" Width="530" Grid.ColumnSpan="2"/>
+        <Label x:Name="SLEDTECTempLabel" Content="SLED TEC Temperature &#xA;Reading" HorizontalAlignment="Left" Margin="434,337,0,0" VerticalAlignment="Top" Height="45" Width="199"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECTempBox"   HorizontalAlignment="Left" Margin="579,347,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SledTECSTempReadingeditRaw" FontSize="9" Content="--" HorizontalAlignment="Left" Margin="579,363,0,0" VerticalAlignment="Top"  Width="82" Height="22" />
+        <Label x:Name="SLEDTECCapacityRealtimeLabel" Content="SLED TEC Capacity" HorizontalAlignment="Left" Margin="434,543,0,0" VerticalAlignment="Top" Height="26" Width="144"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCapacityRealtimeBox"   HorizontalAlignment="Left" Margin="579,548,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECCapacityRealtimeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="579,565,0,0" VerticalAlignment="Top"  Width="81" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCurrentBox"   HorizontalAlignment="Left" Margin="579,587,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECCurrentRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="579,604,0,0" VerticalAlignment="Top"  Width="81" Height="22" />
+        <Label x:Name="OSETempLabel" Content="OSE Body Temperature &#xA;Reading" HorizontalAlignment="Left" Margin="706,240,0,0" VerticalAlignment="Top" Height="42" Width="132"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSETempBox"   HorizontalAlignment="Left" Margin="842,254,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSESectionLabel" Content="OSE BODY TEC" HorizontalAlignment="Left" Margin="706,217,0,0" VerticalAlignment="Top" Height="23" Width="245"  FontWeight="Bold" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSETempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,272,0,0" VerticalAlignment="Top"  Width="82" Height="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSECapacityLabel" Content="OSE Body TEC Capacity" HorizontalAlignment="Left" Margin="706,294,0,0" VerticalAlignment="Top"  Width="136" Height="26"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSECapacityBox"   HorizontalAlignment="Left" Margin="842,300,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSECapacityRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,317,0,0" VerticalAlignment="Top"  Width="80" Height="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSECurrentLabel" Content="OSE Body TEC Current &#xA;Reading" HorizontalAlignment="Left" Margin="706,332,0,0" VerticalAlignment="Top" Height="47" Width="128"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSECurrentBox"   HorizontalAlignment="Left" Margin="842,339,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSECurrentRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,357,0,0" VerticalAlignment="Top"  Width="83" Height="22" Grid.ColumnSpan="2"/>
+        <TextBox IsEnabled="false" Style="{StaticResource HeatorCoolTextBox}"  Text="" x:Name="OSEStatusBox"   HorizontalAlignment="Left" Margin="842,383,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEStatusRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,401,0,0" VerticalAlignment="Top"  Width="83" Height="22" Grid.ColumnSpan="2"/>
+        <Label Content="Board Temperature" HorizontalAlignment="Left" Margin="706,66,0,0" VerticalAlignment="Top" Height="26" Width="138"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="BoardTempBox"   HorizontalAlignment="Left" Margin="842,70,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="BoardTempLabel" Content="Miscellaneous" HorizontalAlignment="Left" Margin="706,22,0,0" VerticalAlignment="Top" Height="27" Width="244" FontWeight="Bold" Grid.ColumnSpan="2"/>
+        <Label x:Name="BoardTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,89,0,0" VerticalAlignment="Top"  Width="96" Height="25" Grid.ColumnSpan="2" />
+        <Label x:Name="SLEDTECCurrentLabel" Content="SLED TEC Current" HorizontalAlignment="Left" Margin="434,580,0,0" VerticalAlignment="Top" Height="34" Width="131"/>
+        <TextBox IsEnabled="false" Style="{StaticResource HeatorCoolTextBox}" Text="" x:Name="SLEDTECStatusBox"   HorizontalAlignment="Left" Margin="579,634,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECStatusRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="579,651,0,0" VerticalAlignment="Top"  Width="84" Height="22" />
+        <Label x:Name="OSEBodyTECCoolingPIDLabel" Content="OSE Body TEC Cooling &#xA;PID" HorizontalAlignment="Left" Margin="706,491,0,0" VerticalAlignment="Top" Height="39" Width="131"/>
+        <Label x:Name="OSEBodyTECHeatingPIDLabel" Content="OSE Body TEC Heating &#xA;PID" HorizontalAlignment="Left" Margin="706,535,0,0" VerticalAlignment="Top" Height="39" Width="132"/>
+        <Label x:Name="OSEBodyTECErrorSizeLabel" Content="OSE Body TEC Error &#xA;Size" HorizontalAlignment="Left" Margin="706,580,0,0" VerticalAlignment="Top" Height="39" Width="127"/>
+        <Label x:Name="OSEBodyTECSpeedChangeValueLabel" Content="OSE Body TEC Speed &#xA;Change Value" HorizontalAlignment="Left" Margin="706,626,0,0" VerticalAlignment="Top" Height="45" Width="135"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSEBodyTECCoolingPIDBox"   HorizontalAlignment="Left" Margin="842,499,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSEBodyTECHeatingPIDBox"   HorizontalAlignment="Left" Margin="842,542,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSEBodyTECErrorSizeBox"   HorizontalAlignment="Left" Margin="842,589,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSEBodyTECSpeedChangeValueBox"   HorizontalAlignment="Left" Margin="842,631,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEBodyTECCoolingPIDRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,516,0,0" VerticalAlignment="Top"  Width="86" Height="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEBodyTECHeatingPIDRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,558,0,0" VerticalAlignment="Top"  Width="93" Height="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEBodyTECErrorSizeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,605,0,0" VerticalAlignment="Top"  Width="97" Height="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEBodyTECSpeedChangeValueRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,650,0,0" VerticalAlignment="Top"  Width="91" Height="22" Grid.ColumnSpan="2"/>
+        <TextBox Style="{StaticResource HeatorCoolTextBox}" IsEnabled="false" Foreground="black" Opacity="1" Text="" x:Name="OSEBodyTECDirectionCorrectBox"   HorizontalAlignment="Left" Margin="842,673,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label x:Name="OSEBodyTECDirectionCorrectRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="842,688,0,0" VerticalAlignment="Top"  Width="83" Height="22" Grid.ColumnSpan="2"/>
+        <Label Content="Manual Register Poll" HorizontalAlignment="Left" Margin="50,13,0,0" VerticalAlignment="Top" Height="29" Width="245" FontWeight="Bold"/>
+        <ComboBox x:Name="FunctionCode" HorizontalAlignment="Left" Margin="50,41,0,0" VerticalAlignment="Top" Width="150" Height="24" SelectionChanged="ManualPollChanged">
+            <ComboBoxItem Content="Read Holding Reg" HorizontalAlignment="Left" Width="150"/>
+            <ComboBoxItem Content="Read Input Reg" HorizontalAlignment="Left" Width="150"/>
+            <ComboBoxItem Content="Write Single Reg" HorizontalAlignment="Left" Width="150"/>
+        </ComboBox>
+        <TextBox IsEnabled="true" Style="{StaticResource HeatorCoolTextBox}" Background="White"   x:Name="ListBox1" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="50,70,0,0" Height="110" VerticalAlignment="Top" Width="150" />
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name ="Addr"   HorizontalAlignment="Left" VerticalAlignment="Top"   Width="82" Margin="207,78,0,0" Height="18"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name ="NumReg"  HorizontalAlignment="Left"  VerticalAlignment="Top"   Width="82" Margin="207,104,0,0" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name ="Value"   HorizontalAlignment="Left" Margin="207,130,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Button x:Name="ManualModbusSend" Content="Send" HorizontalAlignment="Left" Margin="208,162,0,0" VerticalAlignment="Top" Width="81"   Click="ManualModbusSend_Click" Height="18"/>
+        <Label Content="Starting Address" HorizontalAlignment="Left" Margin="290,72,0,0" VerticalAlignment="Top"  Width="106" Height="26" />
+        <Label Content="Number of Registers" HorizontalAlignment="Left" Margin="290,99,0,0" VerticalAlignment="Top"  Width="120" Height="26" />
+        <Label Content="Value to Write" HorizontalAlignment="Left" Margin="290,126,0,0" VerticalAlignment="Top"  Width="107" Height="26" />
+
+        <Label Content="Manual PID Setting" HorizontalAlignment="Left" Margin="50,214,0,0" VerticalAlignment="Top"  Width="167" FontWeight="Bold" Height="26"/>
+        <Label x:Name="OSEBodyTECTimeConstantLabel" Content="OSE TEC Time &#xA;Constant" HorizontalAlignment="Left" Margin="50,243,0,0" VerticalAlignment="Top" Height="40" Width="96"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSEBodyTECTimeConstantBox"   HorizontalAlignment="Left" Margin="142,250,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Label x:Name="OSEBodyTECTimeConstantRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="140,266,0,0" VerticalAlignment="Top"  Width="173" Height="22" />
+        <Label x:Name="KpRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,306,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KpBox"   HorizontalAlignment="Left" Margin="142,292,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Button x:Name="OSETECTimeConstantSetButton" Click="OSETECTimeConstantSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,251,0,0" VerticalAlignment="Top" Width="66" Height="18" />
+        <Button x:Name="KpSetButton"  Click="KpSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,292,0,0" VerticalAlignment="Top" Width="66" Height="18" />
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="OSETECTimeConstantSetBox" HorizontalAlignment="Left" Margin="231,250,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Label x:Name="KpLabel" Content="OSE Body TEC&#xA; Kp Value" HorizontalAlignment="Left" Margin="50,292,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <Label x:Name="KdLabel" Content="OSE Body TEC&#xA; Kd Value" HorizontalAlignment="Left" Margin="50,337,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <Label x:Name="KiLabel" Content="OSE Body TEC&#xA; Ki Value" HorizontalAlignment="Left" Margin="50,376,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KpSetBox" HorizontalAlignment="Left" Margin="231,292,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Label x:Name="KdRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,350,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KdBox"   HorizontalAlignment="Left" Margin="142,337,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KdSetBox" HorizontalAlignment="Left" Margin="231,337,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Label x:Name="KiRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,397,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KiBox"   HorizontalAlignment="Left" Margin="142,384,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="KiSetBox" HorizontalAlignment="Left" Margin="231,384,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <Button x:Name="KdSetButton" Click="KdSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,338,0,0" VerticalAlignment="Top" Width="66" Height="18" />
+        <Button x:Name="KiSetButton" Click="KiSetButton_Click"  Content="Send" HorizontalAlignment="Left" Margin="321,385,0,0" VerticalAlignment="Top" Width="66" Height="18" />
+        <Button x:Name="Close_But" FontFamily="Calibri" FontSize="11" Click="CloseBut_Click" Content="Close" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="82" Margin="271,736,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.RowSpan="2"/>
+
+        <Line  X1="5" Y1="505" X2="375" Y2="505"   Stroke="DarkGray" StrokeThickness="0.6"  Grid.ColumnSpan="2" Margin="34,-77,-34,77"/>
+
+        <Label x:Name="PMTECTimeConstantLabel" Content="PM TEC Time &#xA;Constant" HorizontalAlignment="Left" Margin="50,431,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECTimeConstantBox"   HorizontalAlignment="Left" Margin="142,440,0,0" VerticalAlignment="Top" Width="81" Height="18"/>
+        <Label x:Name="PMTECTimeConstantRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="140,456,0,0" VerticalAlignment="Top"  Width="173" Height="22"/>
+        <Label x:Name="PMKpRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,496,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKpBox"   HorizontalAlignment="Left" Margin="142,482,0,0" VerticalAlignment="Top" Width="81" Height="18"/>
+        <Button x:Name="PMTECTimeConstantSetButton" Click="PMTECTimeConstantSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,441,0,0" VerticalAlignment="Top" Width="66" Height="18"  />
+        <Button x:Name="PMKpSetButton"  Click="PMKpSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,482,0,0" VerticalAlignment="Top" Width="66" Height="18"  />
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECTimeConstantSetBox" HorizontalAlignment="Left" Margin="231,440,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+        <Label x:Name="PMKpLabel" Content="PM Body TEC&#xA; Kp Value" HorizontalAlignment="Left" Margin="50,482,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <Label x:Name="PMKdLabel" Content="PM Body TEC&#xA; Kd Value" HorizontalAlignment="Left" Margin="50,527,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <Label x:Name="PMKiLabel" Content="PM Body TEC&#xA; Ki Value" HorizontalAlignment="Left" Margin="50,566,0,0" VerticalAlignment="Top" Height="40" Width="95"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKpSetBox" HorizontalAlignment="Left" Margin="231,482,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+        <Label x:Name="PMKdRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,540,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKdBox"   HorizontalAlignment="Left" Margin="142,527,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKdSetBox" HorizontalAlignment="Left" Margin="231,527,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+        <Label x:Name="PMKiRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="142,587,0,0" VerticalAlignment="Top"  Width="67" Height="22" />
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKiBox"   HorizontalAlignment="Left" Margin="142,574,0,0" VerticalAlignment="Top"   Width="81" Height="18"/>
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMKiSetBox" HorizontalAlignment="Left" Margin="231,574,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+        <Button x:Name="PMKdSetButton" Click="PMKdSetButton_Click" Content="Send" HorizontalAlignment="Left" Margin="321,528,0,0" VerticalAlignment="Top" Width="66" Height="18"/>
+        <Button x:Name="PMKiSetButton" Click="PMKiSetButton_Click"  Content="Send" HorizontalAlignment="Left" Margin="321,575,0,0" VerticalAlignment="Top" Width="66" Height="18"  />
+
+        <CheckBox x:Name="Show_Raw"  Content="Show Raw Values" Margin="289,15,463,707" IsChecked="False" VerticalContentAlignment="Center" IsThreeState="False" Checked="Show_Raw_Checked" Unchecked="Show_Raw_Unchecked"/>
+        <Label x:Name="PMTempLabel" Content="PM Body Temperature &#xA;Reading" HorizontalAlignment="Left" Margin="107,332,0,0" VerticalAlignment="Top" Height="42" Width="141" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTempBox"   HorizontalAlignment="Left" Margin="246,339,0,0" VerticalAlignment="Top"  Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMSectionLabel" Content="PM BODY TEC" HorizontalAlignment="Left" Margin="107,217,0,0" VerticalAlignment="Top" Height="23" Width="245" FontWeight="Bold" Grid.Column="1"/>
+        <Label x:Name="PMTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,357,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMCapacityLabel" Content="PM Body TEC Capacity" HorizontalAlignment="Left" Margin="107,376,0,0" VerticalAlignment="Top"  Width="148" Height="26" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMCapacityBox"   HorizontalAlignment="Left" Margin="245,382,0,0" VerticalAlignment="Top"  Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMCapacityRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,398,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMCurrentLabel" Content="PM Body TEC Current &#xA;Reading" HorizontalAlignment="Left" Margin="107,412,0,0" VerticalAlignment="Top" Height="47" Width="128" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMCurrentBox"   HorizontalAlignment="Left" Margin="246,419,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMCurrentRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,434,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <TextBox IsEnabled="false" Style="{StaticResource HeatorCoolTextBox }"  Text="" x:Name="PMStatusBox"   HorizontalAlignment="Left" Margin="246,456,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMStatusRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,472,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECTempSetpointDefaultLabel" Content="PM TEC Temp Setpoint&#xA;Default Boot" HorizontalAlignment="Left" Margin="107,240,0,0" VerticalAlignment="Top" Height="43" Width="142" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECTempSetpointDefaultBox"   HorizontalAlignment="Left" Margin="246,254,0,0" VerticalAlignment="Top"  Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMTECSetpointDefaultRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,272,-88,0" VerticalAlignment="Top"  Width="213" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECTempSetpointRealtimeLabel" Content="PM TEC Temperature &#xA;Setpoint Realtime" HorizontalAlignment="Left" Margin="107,286,0,0" VerticalAlignment="Top" Height="42" Width="131" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECTempSetpointRealtimeBox"   HorizontalAlignment="Left" Margin="246,299,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMTECTempSetpointRealtimeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,317,-82,0" VerticalAlignment="Top"  Width="207" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECCoolingPIDLabel" Content="PM TEC Cooling PID" HorizontalAlignment="Left" Margin="107,491,0,0" VerticalAlignment="Top" Height="39" Width="128" Grid.Column="1"/>
+        <Label x:Name="PMTECHeatingPIDLabel" Content="PM TEC Heating PID" HorizontalAlignment="Left" Margin="107,535,0,0" VerticalAlignment="Top" Height="39" Width="133" Grid.Column="1"/>
+        <Label x:Name="PMTECErrorSizeLabel" Content="PM TEC Error Size" HorizontalAlignment="Left" Margin="107,580,0,0" VerticalAlignment="Top" Height="39" Width="124" Grid.Column="1"/>
+        <Label x:Name="PMTECSpeedChangeValueLabel" Content="PM TEC Speed &#xA;Change Value" HorizontalAlignment="Left" Margin="107,620,0,0" VerticalAlignment="Top" Height="39" Width="174" Grid.Column="1"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECCoolingPIDBox"   HorizontalAlignment="Left" Margin="246,499,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECHeatingPIDBox"   HorizontalAlignment="Left" Margin="246,542,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECErrorSizeBox"   HorizontalAlignment="Left" Margin="246,589,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="PMTECSpeedChangeValueBox"   HorizontalAlignment="Left" Margin="246,631,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMTECCoolingPIDRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,516,0,0" VerticalAlignment="Top"  Width="71" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECHeatingPIDRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,558,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECErrorSizeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,605,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <Label x:Name="PMTECSpeedChangeValueRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,650,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <TextBox Style="{StaticResource HeatorCoolTextBox}" IsEnabled="false" Opacity="1" Foreground="Black" Text="" x:Name="PMTECDirectionCorrectBox"   HorizontalAlignment="Left" Margin="246,673,0,0" VerticalAlignment="Top"   Width="82" Grid.Column="1" Height="18"/>
+        <Label x:Name="PMTECDirectionCorrectRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="246,688,-47,0" VerticalAlignment="Top"  Width="172" Grid.Column="1" Height="22"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="ADC_PM_READ_Box"   HorizontalAlignment="Left" Margin="842,124,0,0" VerticalAlignment="Top"   Width="82" Height="18" Grid.ColumnSpan="2"/>
+        <Label Content="ADC PM READ" HorizontalAlignment="Left" Margin="706,118,0,0" VerticalAlignment="Top" Height="30" Width="88"/>
+        <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="92" Margin="38,622,0,0" Stroke="Black" VerticalAlignment="Top" Width="371"/>
+        <Button x:Name="LoggingButAdminNew" Content="Create New" Click="LoggingButAdminNew_Click"  HorizontalContentAlignment="Center" IsEnabled="True" HorizontalAlignment="Left" Height="28" Width="77" Margin="238,649,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="LoggingButAdminExisting" Content="Select Existing" Click="LoggingButAdminExisting_Click"  IsEnabled="True" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="28" Width="87" Margin="317,649,0,0" VerticalAlignment="Top" />
+        <Button Content="Start Admin Logging" x:Name="AdminLoggingOnOff" HorizontalAlignment="Left" Margin="238,682,0,0" VerticalAlignment="Top" Height="23"  Width="166" Click="AdminLoggingOnOff_Click"/>
+        <TextBox IsEnabled="false" Style="{StaticResource HeatorCoolTextBox}" x:Name="filepath" Text="[Please choose admin log path]" HorizontalAlignment="Left" Margin="44,649,0,0" VerticalAlignment="Top"  Width="190"    VerticalContentAlignment="Center"  Height="28"/>
+        <Label Content="Admin Logging" HorizontalAlignment="Left" Margin="42,622,0,0" VerticalAlignment="Top"  Width="166" FontWeight="Bold" Height="26"/>
+        <Label x:Name="SLEDTECCurrSetpointDefaultLabel" Content="SLED TEC Current &#xA;Setpoint Default Boot" HorizontalAlignment="Left" Margin="432,380,0,0" VerticalAlignment="Top" Height="47" Width="146"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCurrSetpointDefaultBox"   HorizontalAlignment="Left" Margin="579,395,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECCurrSetpointDefaultRaw" FontSize="9" Content="--" HorizontalAlignment="Left" Margin="579,411,0,0" VerticalAlignment="Top"  Width="81" Height="22" />
+        <Label x:Name="SLEDTECCurrSetpointRealtimeLabel" Content="SLED TEC Current&#xA;Setpoint Realtime" HorizontalAlignment="Left" Margin="432,459,0,0" VerticalAlignment="Top" Height="47" Width="146"/>
+        <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCurrSetpointRealtimeBox"   HorizontalAlignment="Left" Margin="579,470,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
+        <Label x:Name="SLEDTECCurrSetpointRealtimeRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="579,488,0,0" VerticalAlignment="Top"  Width="82" Height="22" />
+        <Button x:Name="SLEDTECCurrSetButton"  Click="SLEDTECCurrSetButton_Click" Content="Send [A]" HorizontalAlignment="Left" Margin="487,511,0,0" VerticalAlignment="Top" Width="66" Height="18"  />
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCurrSetBox" HorizontalAlignment="Left" Margin="579,511,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+        <Button x:Name="SLEDTECCurrSetDefaultButton"  Click="SLEDTECCurrSetDefaultButton_Click" Content="Send [A]" HorizontalAlignment="Left" Margin="487,433,0,0" VerticalAlignment="Top" Width="66" Height="18"  />
+        <TextBox IsEnabled="true" Style="{StaticResource RegularTextBox}"  Text="" x:Name="SLEDTECCurrSetDefaultBox" HorizontalAlignment="Left" Margin="579,433,0,0" VerticalAlignment="Top"  Width="81" Height="18"/>
+
+
+
+
+    </Grid>
+</Window>

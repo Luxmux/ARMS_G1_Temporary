@@ -1,0 +1,172 @@
+﻿<Window x:Class="ARMS_WPF_G1_Temp.Defaults"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARMS_WPF_G1_Temp"
+        mc:Ignorable="d"
+        Title="ARMS WPF Temp - Set Defaults"  Icon="icon.jpg" Height="528.5" Width="974"  Background="#f5f5f5" ResizeMode="CanMinimize" >
+    <Window.Resources>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#000000"/>
+            <Setter Property="Background" Value="#e6e7e4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1" BorderBrush= "Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#d0d0d0"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#394969"/>
+                    <Setter Property="Background" Value="#b9b9b9"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border  Name="Border" BorderBrush="Black" BorderThickness="1" >
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#e6e7e4"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#707070"/>
+                                <Setter Property="Foreground" Value="#494949"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="WHITE"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
+                                <Setter Property="Foreground" Value="black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+
+
+    </Window.Resources>
+    <Grid Margin="0,0,2,0" Height="498" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="155*"/>
+            <ColumnDefinition Width="1021*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="#f5f5f5" HorizontalAlignment="Left" Height="94" Margin="5,15,0,0" Stroke="DarkGray" VerticalAlignment="Top" Width="485" Grid.ColumnSpan="3"/>
+        <Label Content="New Setting" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="162,43,0,0" VerticalAlignment="Top" Width="94" Grid.Column="2" />
+        <Label Content=" Manufacturer &#xA;Default Setting" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="66,32,0,0" VerticalAlignment="Top" Width="94" Grid.Column="2" Height="42"/>
+        <Label Content="SLED Current"  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="2,69,0,0" Grid.Column="1" Width="95"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerDefPcCurr1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Margin="72,72,0,0" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPcCurr1" KeyDown="OnKeyDownHandler" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" Margin="168,72,0,0" Grid.Column="2"/>
+        <Button Content="Save" x:Name="Sled1PCCurrSaveBut" Click="Sled1PCCurrSaveBut_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Width="82" Margin="259,72,0,0" Grid.Column="2"/>
+        <Label Content="Existing Setting" Margin="140,41,940,0" VerticalAlignment="Top" Grid.Column="1"  Grid.ColumnSpan="2"/>
+        <TextBox IsEnabled="False" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" x:Name ="ExistingPcCurr1" Background="#f5f5f5"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="80" Margin="101,72,0,0" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="SLED Drive Current - PC Mode" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="2,1,0,0" VerticalAlignment="Top"  Width="172" Grid.ColumnSpan="2" Height="25" Grid.Column="1"/>
+        <Rectangle Fill="#f5f5f5" HorizontalAlignment="Left" Height="127" Margin="5,328,0,0" Stroke="DarkGray" VerticalAlignment="Top" Width="485" Grid.ColumnSpan="3"/>
+        <Label Content="Modbus ID" HorizontalAlignment="Left" Margin="2,355,0,0" VerticalAlignment="Top"  Width="100" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name ="ManufacturerDefModbusID" HorizontalAlignment="Left" Margin="73,359,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempModbusID" HorizontalAlignment="Left" Height="23" Margin="169,359,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" Grid.Column="2"/>
+        <Button Content="Save" x:Name="ModbusIDSaveBut" Click="ModbusIDSaveBut_Click" HorizontalAlignment="Left" Margin="259,359,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingModbusID" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="102,359,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="80" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="#f5f5f5" HorizontalAlignment="Left" Height="187" Margin="5,126,0,0" Stroke="DarkGray" VerticalAlignment="Top" Width="485" Grid.ColumnSpan="3"/>
+        <Label Content="Communications" Background="#f5f5f5" HorizontalAlignment="Left" Margin="2,315,0,0" VerticalAlignment="Top"  Width="100" Grid.Column="1"/>
+        <Label Content="SLED TEC Control" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="2,112,0,0" VerticalAlignment="Top"  Width="102" Height="24" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingSTECTempSetpointDefaultBoot" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="100,152,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerSTECTempSetpointDefaultBoot" HorizontalAlignment="Left" Margin="72,152,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempSTECTempSetpointDefaultBoot" KeyDown="OnKeyDownHandler" HorizontalAlignment="Left" Height="23" Margin="169,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2" RenderTransformOrigin="0.468,0.652"/>
+        <Button Content="Save" x:Name="STECTempSetpointDefaultBootSaveBut" Click="STECTempSetpointDefaultBootSaveBut_Click" HorizontalAlignment="Left" Margin="259,152,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2" RenderTransformOrigin="0.609,-0.043"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingOSEBodyTECKpFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="100,214,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerOSEBodyTECTimeConstant" HorizontalAlignment="Left" Margin="72,183,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempOSEBodyTECTimeConstant" HorizontalAlignment="Left" Height="23" Margin="169,183,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="OSEBodyTECTimeConstantSaveBut" Click="OSEBodyTECTimeConstantSaveBut_Click" HorizontalAlignment="Left" Margin="259,183,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Label x:Name="temp" Content="Temperature &#xA;Setpoint" HorizontalAlignment="Left" Margin="2,142,0,0" VerticalAlignment="Top" Height="42" Width="100" Grid.Column="1"/>
+        <Button Content="Reset to Factory Defaults" x:Name="ResetToManufacturerDefaultsBut" Click="ResetToManufacturerDefaultsBut_Click" Margin="359,464,298,0" VerticalAlignment="Top" Height="23" Grid.Column="2"/>
+        <Rectangle Fill="#f5f5f5" HorizontalAlignment="Left" Height="95" Margin="359,15,0,0" Stroke="DarkGray" VerticalAlignment="Top" Width="458" Grid.Column="2"/>
+        <Label Content="New Setting" HorizontalAlignment="Left" Margin="632,43,0,0" VerticalAlignment="Top" Width="94" Grid.Column="2" HorizontalContentAlignment="Center"/>
+        <Label Content=" Manufacturer &#xA;Default Setting" HorizontalAlignment="Left" Margin="538,32,0,0" VerticalAlignment="Top" Width="94" Grid.Column="2" Height="42" HorizontalContentAlignment="Center"/>
+        <Label Content="SLED Current"  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="364,69,0,0" Grid.Column="2" Width="92"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerDefManCurr1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Margin="545,72,0,0" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" KeyDown="OnKeyDownHandler" HorizontalContentAlignment="Center" x:Name="TempManCurr1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" Margin="638,72,0,0" Grid.Column="2"/>
+        <Button Content="Save" x:Name="Sled1ManCurrSaveBut" Click="Sled1ManCurrSaveBut_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Width="78" Margin="730,72,0,0" Grid.Column="2"/>
+        <Label Content="     Existing &#xA;Default Setting" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="446,32,0,0" VerticalAlignment="Top" Width="94" Grid.Column="2" />
+        <TextBox IsEnabled="False" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" x:Name ="ExistingManCurr1" Background="#f5f5f5"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Margin="453,72,0,0" Grid.Column="2"/>
+        <Label Content="SLED Drive Current - Manual Mode" Background="#f5f5f5" HorizontalAlignment="Left" Margin="368,3,0,0" VerticalAlignment="Top" Grid.Column="2"  Width="196"/>
+        <TextBox VerticalContentAlignment="Top" HorizontalContentAlignment="Left" x:Name="Diagnostics" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible"  HorizontalAlignment="Left" Height="127" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="458" Margin="359,328,0,0" Grid.Column="2"/>
+        <Label Content="TCP IP" HorizontalAlignment="Left" Margin="2,385,0,0" VerticalAlignment="Top"  Width="100" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerDefIP" HorizontalAlignment="Left" Margin="73,391,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempIP" HorizontalAlignment="Left" Height="23" Margin="169,391,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" Grid.Column="2"/>
+        <Button Content="Save" x:Name="TCPIPSaveBut" Click="TCPIPSaveBut_Click" HorizontalAlignment="Left" Margin="259,391,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingIP" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="102,391,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="80" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="TCP IP Port" HorizontalAlignment="Left" Margin="2,415,0,0" VerticalAlignment="Top"  Width="100" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerDefPort" HorizontalAlignment="Left" Margin="73,421,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPort" HorizontalAlignment="Left" Height="23" Margin="169,421,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" Grid.Column="2"/>
+        <Button Content="Save" x:Name="TCPIPPortSaveBut" Click="TCPIPPortSaveBut_Click" HorizontalAlignment="Left" Margin="259,421,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPort" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="102,421,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="80" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingOSEBodyTECTimeConstant" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="100,183,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerOSEBodyTECKpFactorDefault" HorizontalAlignment="Left" Margin="72,214,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="OSEBodyTECKpFactorDefaultSaveBut" Click="OSEBodyTECKpFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="259,214,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Label x:Name="OSEBodyTECTimeConstantLabel" Content="Time Constant" HorizontalAlignment="Left" Margin="2,182,0,0" VerticalAlignment="Top"  Width="95" Grid.Column="1"/>
+        <Label x:Name="KpDefaulLabel" Content="Kp Factor " HorizontalAlignment="Left" Margin="2,208,0,0" VerticalAlignment="Top" Height="34" Width="95" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingOSEBodyTECKdFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="100,244,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingOSEBodyTECKiFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="101,276,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerOSEBodyTECKdFactorDefault" HorizontalAlignment="Left" Margin="72,244,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Label x:Name="KdDefaulLabel" Content="Kd Factor " HorizontalAlignment="Left" Margin="2,244,0,0" VerticalAlignment="Top" Height="23" Width="95" Grid.Column="1"/>
+        <Label x:Name="KiDefaulLabel"  Content="Ki Factor " Margin="2,276,25,0" VerticalAlignment="Top" Height="23" Grid.Column="1"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerOSEBodyTECKiFactorDefault" HorizontalAlignment="Left" Margin="72,276,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="OSEBodyTECKdFactorDefaultSaveBut" Click="OSEBodyTECKdFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="259,244,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="OSEBodyTECKiFactorDefaultSaveBut" Click="OSEBodyTECKiFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="259,276,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempOSEBodyTECKpFactorDefault" HorizontalAlignment="Left" Height="23" Margin="169,214,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempOSEBodyTECKdFactorDefault" HorizontalAlignment="Left" Height="23" Margin="169,244,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2" RenderTransformOrigin="0.663,-0.043"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempOSEBodyTECKiFactorDefault" HorizontalAlignment="Left" Height="23" Margin="168,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+        <Label Content="     Existing &#xA;Default Setting" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="94,32,0,0" VerticalAlignment="Top" Width="94" Grid.Column="1"  Grid.ColumnSpan="2"/>
+        <Button x:Name="Close_But" FontFamily="Calibri" FontSize="11" Click="CloseBut_Click" Content="Close" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="82" Margin="735,464,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+        <Rectangle Fill="#f5f5f5" HorizontalAlignment="Left" Height="187" Margin="359,126,0,0" Stroke="DarkGray" VerticalAlignment="Top" Width="458" Grid.Column="2"/>
+        <Label Content="PM TEC Control" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="369,112,0,0" VerticalAlignment="Top"  Width="102" Height="24" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPMTECTempSetpointDefaultBoot" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="453,152,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerPMTECTempSetpointDefaultBoot" HorizontalAlignment="Left" Margin="545,152,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPMTECTempSetpointDefaultBoot" KeyDown="OnKeyDownHandler" HorizontalAlignment="Left" Height="23" Margin="638,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2" RenderTransformOrigin="0.468,0.652"/>
+        <Button Content="Save" x:Name="PMTECTempSetpointDefaultBootSaveBut" Click="PMTECTempSetpointDefaultBootSaveBut_Click" HorizontalAlignment="Left" Margin="728,152,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2" RenderTransformOrigin="0.609,-0.043"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPMTECKpFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="453,214,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerPMTECTimeConstant" HorizontalAlignment="Left" Margin="545,183,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPMTECTimeConstant" HorizontalAlignment="Left" Height="23" Margin="638,183,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="PMTECTimeConstantSaveBut" Click="PMTECTimeConstantSaveBut_Click" HorizontalAlignment="Left" Margin="728,183,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Label x:Name="temp_PM" Content="Temperature &#xA;Setpoint" HorizontalAlignment="Left" Margin="364,142,0,0" VerticalAlignment="Top" Height="42" Width="100" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPMTECTimeConstant" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="453,183,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerPMTECKpFactorDefault" HorizontalAlignment="Left" Margin="545,214,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="PMTECKpFactorDefaultSaveBut" Click="PMTECKpFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="728,214,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Label x:Name="PMTECTimeConstantLabel" Content="Time Constant" HorizontalAlignment="Left" Margin="364,182,0,0" VerticalAlignment="Top"  Width="95" Grid.Column="2"/>
+        <Label x:Name="KpDefaulLabel_PM" Content="Kp Factor " HorizontalAlignment="Left" Margin="364,208,0,0" VerticalAlignment="Top" Height="34" Width="95" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPMTECKdFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="453,244,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="" IsEnabled="False" x:Name="ExistingPMTECKiFactorDefault" Background="#f5f5f5"  HorizontalAlignment="Left" Margin="454,276,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="81" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerPMTECKdFactorDefault" HorizontalAlignment="Left" Margin="545,244,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Label x:Name="KdDefaulLabel_PM" Content="Kd Factor " HorizontalAlignment="Left" Margin="364,244,0,0" VerticalAlignment="Top" Height="23" Width="95" Grid.Column="2"/>
+        <Label x:Name="KiDefaulLabel_PM"  Content="Ki Factor " Margin="364,276,364,0" VerticalAlignment="Top" Height="23" Grid.Column="2"/>
+        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#f5f5f5" Text="" IsEnabled="False" x:Name="ManufacturerPMTECKiFactorDefault" HorizontalAlignment="Left" Margin="545,276,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.952,-0.051" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="PMTECKdFactorDefaultSaveBut" Click="PMTECKdFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="728,244,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <Button Content="Save" x:Name="PMTECKiFactorDefaultSaveBut" Click="PMTECKiFactorDefaultSaveBut_Click" HorizontalAlignment="Left" Margin="728,276,0,0" VerticalAlignment="Top" Height="23" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPMTECKpFactorDefault" HorizontalAlignment="Left" Height="23" Margin="638,214,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPMTECKdFactorDefault" HorizontalAlignment="Left" Height="23" Margin="638,244,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2" RenderTransformOrigin="0.663,-0.043"/>
+        <TextBox KeyDown="OnKeyDownHandler" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" x:Name="TempPMTECKiFactorDefault" HorizontalAlignment="Left" Height="23" Margin="637,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="82" Grid.Column="2"/>
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,98 @@
+﻿<Window x:Class="ARMS_WPF_G1_Temp.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARMS_WPF_G1_Temp"
+        mc:Ignorable="d"
+        Title="ARMS WPF Temp - About" Height="448" Width="913" Background="#f0f0f0" Icon="icon.jpg" ResizeMode="CanMinimize">
+    <Window.Resources>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#000000"/>
+            <Setter Property="Background" Value="#e6e7e4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1" BorderBrush= "Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#d0d0d0"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#394969"/>
+                    <Setter Property="Background" Value="#b9b9b9"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border  Name="Border" BorderBrush="Black" BorderThickness="1" >
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#e6e7e4"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="WHITE"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+
+
+    </Window.Resources>
+    <Grid Margin="-3,0,-3,-3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="109*"/>
+            <ColumnDefinition Width="804*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="logo" HorizontalAlignment="Left" Height="245" Width="262" Margin="27,-12,0,0" VerticalAlignment="Top" Source="logo2.PNG" Grid.ColumnSpan="2"/>
+        <Label   FontFamily="Calibri" FontSize="13" HorizontalAlignment="Left" Width="302" Margin="22,273,0,0" VerticalAlignment="Top" Height="32" Grid.ColumnSpan="2">
+            <Run Text="Copyright © 2021 Luxmux Technology Corporation"/>
+        </Label>
+        <Label Content="ARMS WPF Temp Integrated Spectral Bench" x:Name="LightSourceLabel" FontFamily="Calibri" FontSize="14"  HorizontalAlignment="Left" Margin="22,196,0,0" VerticalAlignment="Top"  Height="27" Width="302" Grid.ColumnSpan="2"/>
+        <Label Content="Model Number: N/A" x:Name="ModelumberLabel" FontFamily="Calibri" FontSize="13"  HorizontalAlignment="Left" Margin="22,224,0,0" VerticalAlignment="Top"  Height="27" Width="302" Grid.ColumnSpan="2"/>
+        <Label Content="Software Version:" x:Name="SoftwareVersionLabel" FontFamily="Calibri" FontSize="13"  HorizontalAlignment="Left" Margin="22,249,0,0" VerticalAlignment="Top"  Height="25" Width="302" Grid.ColumnSpan="2"/>
+        <Border BorderThickness="1" BorderBrush="Gray" Margin="221,64,18,170" Grid.Column="1" />
+        <Label Content="Capabilities" HorizontalAlignment="Left" Margin="231,50,0,0" VerticalAlignment="Top" Background="#f0f0f0" Grid.Column="1"/>
+        <Label Content="SLED Wavelength" HorizontalAlignment="Left" Margin="231,78,0,0" VerticalAlignment="Top" Grid.Column="1" />
+        <Label Content="N/A" x:Name="SLED1" HorizontalAlignment="Left" Margin="338,79,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Label Content="SLED TEC" HorizontalAlignment="Left" Margin="231,105,0,0" VerticalAlignment="Top" Grid.Column="1" />
+        <Label Content="Heat Sink Temp" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,131,0,0" Grid.Column="1"/>
+        <Label Content="Power Meter" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,158,0,0" Grid.Column="1"/>
+        <Label Content="Firmware Version" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,185,0,0" Grid.Column="1"/>
+        <Label Content="Mac Address" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,212,0,0" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="SLED_TEC" HorizontalAlignment="Left" Margin="338,105,0,0" VerticalAlignment="Top"  Height="26" Width="200" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Heat_Sink_Temp" HorizontalAlignment="Left" Margin="338,131,0,0" VerticalAlignment="Top"  Height="26" Width="200" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Power_Meter" HorizontalAlignment="Left" Margin="338,159,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Firmware_Version" HorizontalAlignment="Left" Margin="338,184,0,0" VerticalAlignment="Top"  Height="28" Width="200" Grid.Column="1"/>
+        <Label Content="N/A" x:Name="Mac_Address" HorizontalAlignment="Left" Margin="338,213,0,0" VerticalAlignment="Top"  Height="24" Width="200" Grid.Column="1"/>
+        <Button x:Name="NewDiagnosticFile" FontFamily="Calibri" FontSize="11" Click="NewDiagnosticFile_Click" Content="Create New Diagnostic File (.csv)" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="164" Margin="615,269,0,0" VerticalAlignment="Top" Grid.Column="1"  />
+        <Button x:Name="Close_But" FontFamily="Calibri" FontSize="11" Click="CloseBut_Click" Content="Close" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="82" Margin="697,304,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBox x:Name="filepath" Text="[Please choose path to create new diagnostic file]" FontFamily="Calibri" FontSize="11" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="220,269,0,0" VerticalAlignment="Top"  Height="23" Width="391" Grid.Column="1"/>
+    </Grid>
+
+
+</Window>

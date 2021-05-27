@@ -1,0 +1,25 @@
+﻿<Window x:Class="ARMS_WPF_G1_Temp.Photosensitivity"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARMS_WPF_G1_Temp"
+        mc:Ignorable="d"
+        Title="ARMS WPF Temp - Photosensitivity Curve" Height="500" Width="600" Icon="icon.jpg" ResizeMode="CanMinimize" Margin = "800,800,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid Margin="0,0,-8,25">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Image HorizontalAlignment="Left"  Source="Photosensitivity_curve.jpg" Width="581" RenderTransformOrigin="0.5,0.5" Margin="13,0,0,13" Height="422" VerticalAlignment="Bottom" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.313"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.495"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+
+    </Grid>
+</Window>
