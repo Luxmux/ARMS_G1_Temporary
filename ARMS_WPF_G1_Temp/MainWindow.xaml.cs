@@ -787,11 +787,17 @@ namespace ARMS_WPF_G1_Temp
 
             this.Dispatcher.Invoke(() =>
             {
-                if (mySlave.Mode == LOCKED)
+
+                readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 8, 1);
+                if (readData[0] == 0)
+                    mySlave.Locked = LOCKED;
+                else
+                    mySlave.Locked = UNLOCKED;
+
+                if (mySlave.Locked == LOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
                     PrintStringToDiagnostics("Lamp is Locked");
-                    whichMode = "Locked";
                     mySlave.LampEnable = 0;
 
                     //disable modulation button
@@ -840,7 +846,7 @@ namespace ARMS_WPF_G1_Temp
                     }
                 }
                 
-                else if (mySlave.Mode == UNLOCKED)
+                else if (mySlave.Locked == UNLOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
                     PrintStringToDiagnostics("Lamp is unlocked");
@@ -1225,7 +1231,7 @@ namespace ARMS_WPF_G1_Temp
 
                                 ///////////////////////////////// MANUAL MODE SELECTED CONTINUOUS READ /////////////////////////////////
 
-                                if (mySlave.Mode == LOCKED)
+                                if (mySlave.Locked == LOCKED)
                                 {
                                     // BeST SLED is in Manual Mode, log change if necessary
                                     // If we detect a change in "mode" (including no mode at all on bootup)
@@ -1238,7 +1244,6 @@ namespace ARMS_WPF_G1_Temp
                                             PrintStringToDiagnostics("Lamp is Locked.");
                                         });
                                     }
-                                    whichMode = "Locked";
                                     mySlave.CurrentMode = mySlave.Mode;
 
                                     //For logfile
@@ -1268,7 +1273,7 @@ namespace ARMS_WPF_G1_Temp
 
                                 ///////////////////////////////// PC MODE CONTINUOUS READ SELECTED /////////////////////////////////
 
-                                else if (mySlave.Mode == UNLOCKED)
+                                else if (mySlave.Locked == UNLOCKED)
                                 {
 
 
@@ -1276,7 +1281,7 @@ namespace ARMS_WPF_G1_Temp
                                     if (mySlave.Mode != mySlave.CurrentMode)
                                     {
                                         //If the previous mode was manual, turn off sleds
-                                        if (mySlave.CurrentMode == LOCKED)
+                                        if (mySlave.Locked == LOCKED)
                                         {
                                             mbClient.WriteSingleRegister((byte)mySlave.ModbusID, 16, 0);
                                             mySlave.SledsAreOn = 0;
@@ -1289,11 +1294,9 @@ namespace ARMS_WPF_G1_Temp
                                         
                                         PrintStringToDiagnostics("Lamp is Unlocked");
                                     }
-                                    whichMode = "Unlocked";
                                     mySlave.CurrentMode = mySlave.Mode;
                                     //modeString is used for logfile string
-                                    modeString = "Unlocked";
-
+                                 
                                     //Check if sled  Power is on according to the unit
                                     readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 16, 1);
                                     mySlave.SledsAreOn = readData[0];
@@ -1377,7 +1380,7 @@ namespace ARMS_WPF_G1_Temp
                                     }
 
 
-                                    if (whichMode == "Locked")
+                                    if (mySlave.Locked == LOCKED)
                                     {
 
                                         slider1TrackBar.IsEnabled = false;
@@ -1388,7 +1391,7 @@ namespace ARMS_WPF_G1_Temp
 
 
                                     }
-                                    else if (whichMode == "Unlocked")
+                                    else if (mySlave.Locked == UNLOCKED)
                                     {
                                         if (mySlave.SledsAreOn == 0)
                                         {
@@ -1496,7 +1499,7 @@ namespace ARMS_WPF_G1_Temp
 
                                         if (mySlave.Capabilities[0] != 0)
                                         {
-                                            actualCurr1Edit.Text = Math.Round((mySlave.ActualCurr1ReadVal * Math.Pow(10.0, int.Parse(CheckMagnitude(mySlave.ActualCurr1ReadVal).Split(',')[0]))), 1).ToString("0.0") + CheckMagnitude(mySlave.ActualCurr1ReadVal).Split(',')[1];
+                                            actualCurr1Edit.Text = (2.5 * (mySlave.Sled1CurrSenseRaw * 1000 / (65535.0))).ToString("0") + " mA"; 
                                         }
                                         else
                                         {
@@ -1606,6 +1609,16 @@ namespace ARMS_WPF_G1_Temp
                                     mySlave.Gas3 = Math.Round((2.5 * (double)mySlave.Gas3Raw / 65535.0), 1);
                                     mySlave.Gas4Raw = readData[0];
                                     mySlave.Gas4 = Math.Round((2.5 * (double)mySlave.Gas4Raw / 65535.0), 1);
+
+                                    // if locked set slider to setcurrent
+
+                                    if (mySlave.Locked == LOCKED)
+                                    {
+                                        readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
+                                        
+                                        slider1TrackBar.Value = readData[0] * 2.5 / 65535.0 * 1000;
+
+                                    }
 
                                     UpdateAdminVariables(mySlave);
 
@@ -1899,6 +1912,8 @@ namespace ARMS_WPF_G1_Temp
             {
                 if (mySlave.LampEnable == 0)
                 {
+                    mySlave.Locked = UNLOCKED;
+
                     mySlave.LampEnable = 1;
                     lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
                     lampEnableBut.Content = "         UnLocked";
@@ -1906,14 +1921,24 @@ namespace ARMS_WPF_G1_Temp
 
                     PrintStringToDiagnostics("Lamp Unlocked successful.");
                    ushort[] readData=mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 8, 1);
+
+                    //enable slider
+                    whichMode = "1";
+                    slider1TrackBar.IsEnabled =true;
                 }
                 else
                 {
+                    mySlave.Locked = LOCKED;
+
                     mySlave.LampEnable = 0;
                     lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
                     mbClient.WriteSingleRegister((byte)mySlave.ModbusID, 8, 0);
                     lampEnableBut.Content = "         Locked";
 
+                    //disable slider
+                    whichMode = "0";
+                    slider1TrackBar.IsEnabled = false;
+                    mySlave.Locked = LOCKED;
                     PrintStringToDiagnostics("Lamp Locked successful.");
 
                 }

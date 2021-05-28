@@ -41,6 +41,7 @@ namespace ARMS_WPF_G1_Temp
         private List<string> currentLogStrings = new List<string>();
         private List<string> currentPublicLogStrings = new List<string>();
         private int mode;
+        private int locked;
         private int sTECOn;
         private int sledsAreOn;
         private int lampEnable;
@@ -1053,6 +1054,12 @@ namespace ARMS_WPF_G1_Temp
         {
             get { return mode; }
             set { mode = value; }
+        }
+
+        public int Locked
+        {
+            get { return locked; }
+            set { locked = value; }
         }
 
         public List<string> CurrentLogStrings
