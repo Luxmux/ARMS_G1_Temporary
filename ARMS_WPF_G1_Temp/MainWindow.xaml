@@ -302,7 +302,7 @@
             <Label FontFamily="Calibri" FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"   Width="76" VerticalAlignment="Top" Margin="163,407,0,0" Height="22" HorizontalAlignment="Left" Content="Fan Speed" Grid.Row="1"    />
             <Border Width="42" VerticalAlignment="Top" Height="343" HorizontalAlignment="Left"  BorderThickness="1" BorderBrush="black" Margin="23,59,0,0" Grid.RowSpan="2" Grid.Column="1" />
 
-            <custom:SliderWithTickLabels Style="{StaticResource dayTimeSlider}" BorderBrush="Black" BorderThickness="1" ValueChanged="Slider1_ValueChanged" Thumb.DragCompleted="Slider1_DragCompleted" x:Name="slider1TrackBar" HorizontalAlignment="Center" VerticalAlignment="Center" IsDirectionReversed="False" Orientation="Horizontal" Width="328"  TickPlacement="TopLeft" Minimum="0" Maximum="550" TickFrequency="50" IsSnapToTickEnabled="True"  RenderTransformOrigin="0.5,0.5" Margin="165,87,717,488" Height="42" Grid.ColumnSpan="4" Grid.Row="1"     >
+            <custom:SliderWithTickLabels Style="{StaticResource dayTimeSlider}" BorderBrush="Black" BorderThickness="1" ValueChanged="Slider1_ValueChanged" Thumb.DragCompleted="Slider1_DragCompleted" x:Name="slider1TrackBar" HorizontalAlignment="Center" VerticalAlignment="Center" IsDirectionReversed="False" Orientation="Horizontal" Width="328"  TickPlacement="TopLeft" Minimum="0" Maximum="550" TickFrequency="40" IsSnapToTickEnabled="True"  RenderTransformOrigin="0.5,0.5" Margin="165,87,717,488" Height="42" Grid.ColumnSpan="4" Grid.Row="1"     >
                 <custom:SliderWithTickLabels.RenderTransform>
                     <TransformGroup>
                         <RotateTransform Angle="-90" />

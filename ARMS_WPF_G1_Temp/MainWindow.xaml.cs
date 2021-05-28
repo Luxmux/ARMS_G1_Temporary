@@ -382,14 +382,13 @@ namespace ARMS_WPF_G1_Temp
                     connectStatus = mbClient.Connect();
                     if (connectStatus == 1) //check if it's best led
                     {
-                        UInt16[] bytesRead = this.mbClient.ReadInputRegisters(255, 0, 6);
+                        UInt16[] bytesRead = this.mbClient.ReadInputRegisters(255, 0, 5);
                         //Confirm unit ID
-                        if (bytesRead[0] == 0x5349 &&
-                            bytesRead[1] == 0x4E47 &&
-                            bytesRead[2] == 0x4C45 &&
-                            bytesRead[3] == 0x534C &&
-                            bytesRead[4] == 0x4544 &&
-                            bytesRead[5] == 0x4731) // if "Best sled" id confirmed
+                        if (bytesRead[0] == 0x4152 &&
+                            bytesRead[1] == 0x4D53 &&
+                            bytesRead[2] == 0x5345 &&
+                            bytesRead[3] == 0x4E53 &&
+                            bytesRead[4] == 0x4F52) // if  id confirmed
                         {
                             foundbestsled = true;
                             newconnection = true;
@@ -406,7 +405,7 @@ namespace ARMS_WPF_G1_Temp
                 newSlave.SlaveID = comtotry;
                 modbusSlaveList[newSlave.SlaveID] = newSlave;
                 selectedSlaveID = comtotry; // set the active selected slave for all functions going forward
-                PrintStringToDiagnostics("Single-SLED ID verified successfully");
+                PrintStringToDiagnostics("ARMS G1 ID verified successfully");
                 UpdateFromCommsAsync("COM" + (comtotry).ToString(), "COM");
                 
                 this.Dispatcher.Invoke(() =>
@@ -662,7 +661,7 @@ namespace ARMS_WPF_G1_Temp
                     PrintStringToDiagnostics("Loading Configuration...");
 
                     //Wait for boot done bit
-                    while (mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 5, 1)[0] == 0)
+                    while (mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 12, 1)[0] == 0)
                     {
                         //NOP
                         //Should put a timeout here
@@ -671,7 +670,7 @@ namespace ARMS_WPF_G1_Temp
                     SetStateSignal(IDLE_CYCLE, mySlave.SlaveID);
 
                     UInt16[] readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 0, 1);
-                    mySlave.ModbusID = readData[0];
+                    //mySlave.ModbusID = readData[0];
 
                     ReadAndSetDefaultsAndCapabilities(mySlave); // do first check stuff for each slave id
                     aboutWindow.UpdateAboutGUI(mySlave);
@@ -713,8 +712,8 @@ namespace ARMS_WPF_G1_Temp
 
             //Itziar Finish this part
             //read firmware 
-            UInt16[] readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,0, 7);
-            mySlave.FirmwareVersion = readData[6];
+            UInt16[] readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,6, 1);
+            mySlave.FirmwareVersion = readData[0];
 
             this.Dispatcher.Invoke(() =>
             {
@@ -791,9 +790,9 @@ namespace ARMS_WPF_G1_Temp
                 if (mySlave.Mode == LOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
-                    PrintStringToDiagnostics("Manual Mode Selected");
-                    whichMode = "Manual Mode";
-
+                    PrintStringToDiagnostics("Lamp is Locked");
+                    whichMode = "Locked";
+                    mySlave.LampEnable = 0;
 
                     //disable modulation button
 
@@ -844,17 +843,12 @@ namespace ARMS_WPF_G1_Temp
                 else if (mySlave.Mode == UNLOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
-                    PrintStringToDiagnostics("PC Mode Selected");
-                    whichMode = "PC Mode";
-
-                    //Check if TEC on
-                    readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID,50, 1);
-                    if (readData[0] == 1)
-                    {
-                        mySlave.STECOn = 1;
+                    PrintStringToDiagnostics("Lamp is unlocked");
+                    whichMode = "Unlocked";
+                    mySlave.LampEnable = 1;
 
                         //Check SLEDs on
-                        UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID,16, 1);
+                    UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID,16, 1);
                         if (readData2[0] == 1)
                         {
                             mySlave.SledsAreOn = 1;
@@ -881,19 +875,19 @@ namespace ARMS_WPF_G1_Temp
                         {
                             mySlave.SledsAreOn = 0;
 
-                            maxBut.IsEnabled = false;
-                            minBut.IsEnabled = false;
-                            sledsOnBut.IsEnabled = false;
+                            maxBut.IsEnabled = true;
+                            minBut.IsEnabled = true;
+                            sledsOnBut.IsEnabled = true;
 
 
                             //If SLED TEC is off, disable sliders
-                            slider1TrackBar.IsEnabled = false;
-                            setCurr1Edit.IsEnabled = false;
+                            slider1TrackBar.IsEnabled = true;
+                            setCurr1Edit.IsEnabled = true;
 
                             Slider1Changed = 0;
                             Slider1_temp = 0;
                         }
-                    }
+                    
                 }
             });
 
@@ -1240,10 +1234,11 @@ namespace ARMS_WPF_G1_Temp
                                     {
                                         this.Dispatcher.Invoke(() =>
                                         {
-                                            whichMode = "Locked";
+                                            
                                             PrintStringToDiagnostics("Lamp is Locked.");
                                         });
                                     }
+                                    whichMode = "Locked";
                                     mySlave.CurrentMode = mySlave.Mode;
 
                                     //For logfile
@@ -1291,9 +1286,10 @@ namespace ARMS_WPF_G1_Temp
                                             });
 
                                         }
-                                        whichMode = "Unlocked";
+                                        
                                         PrintStringToDiagnostics("Lamp is Unlocked");
                                     }
+                                    whichMode = "Unlocked";
                                     mySlave.CurrentMode = mySlave.Mode;
                                     //modeString is used for logfile string
                                     modeString = "Unlocked";
@@ -1904,17 +1900,17 @@ namespace ARMS_WPF_G1_Temp
                 if (mySlave.LampEnable == 0)
                 {
                     mySlave.LampEnable = 1;
-                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
-                    lampEnableBut.Content = "         Enabled";
+                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+                    lampEnableBut.Content = "         UnLocked";
                     mbClient.WriteSingleRegister((byte)mySlave.ModbusID, 8, 1);
 
                     PrintStringToDiagnostics("Lamp Unlocked successful.");
-
+                   ushort[] readData=mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 8, 1);
                 }
                 else
                 {
                     mySlave.LampEnable = 0;
-                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
                     mbClient.WriteSingleRegister((byte)mySlave.ModbusID, 8, 0);
                     lampEnableBut.Content = "         Locked";
 
