@@ -1393,7 +1393,7 @@ namespace ARMS_WPF_G1_Temp
                                     }
                                     else
                                     {
-                                        mySlave.ActualCurr1ReadVal = 1.25 * mySlave.Sled1CurrSenseRaw / (1.5 * 65535.0);
+                                        mySlave.ActualCurr1ReadVal = 2.5 * mySlave.Sled1CurrSenseRaw / (1.5 * 65535.0);
                                     }
                                     //Current Sense Values 
                                     if ((showRawValues))
