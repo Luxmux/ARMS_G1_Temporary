@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ARMS_WPF_G1_Temp"
         mc:Ignorable="d"
-        Title="ARMS WPF Temp - Admin" Height="357.167" Width="789" Icon="icon.jpg" ResizeMode="CanMinimize">
+        Title="ARMS WPF Temp - Admin" Height="364.167" Width="796" Icon="icon.jpg" ResizeMode="CanMinimize">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="BorderThickness" Value="1"/>
@@ -202,7 +202,7 @@
     </Window.Resources>
 
 
-    <Grid Margin="-26,1,6,0">
+    <Grid Margin="-26,1,4,-8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0"/>
@@ -222,7 +222,7 @@
         <Label Content="Board Temperature" HorizontalAlignment="Left" Margin="442,136,0,0" VerticalAlignment="Top" Height="26" Width="176"/>
         <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="BoardTempBox"   HorizontalAlignment="Left" Margin="585,140,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
         <Label Content="Miscellaneous" HorizontalAlignment="Left" Margin="428,113,0,0" VerticalAlignment="Top" Height="27" Width="310" FontWeight="Bold"/>
-        <Label x:Name="BoardTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="679,138,0,0" VerticalAlignment="Top"  Width="122" Height="19" />
+        <Label x:Name="BoardTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="679,138,0,0" VerticalAlignment="Top"  Width="122" Height="26" />
         <Label Content="Manual Register Poll" HorizontalAlignment="Left" Margin="50,13,0,0" VerticalAlignment="Top" Height="29" Width="245" FontWeight="Bold"/>
         <ComboBox x:Name="FunctionCode" HorizontalAlignment="Left" Margin="50,41,0,0" VerticalAlignment="Top" Width="150" Height="24" SelectionChanged="ManualPollChanged">
             <ComboBoxItem Content="Read Holding Reg" HorizontalAlignment="Left" Width="150"/>
@@ -242,7 +242,7 @@
         <CheckBox x:Name="Show_Raw"  Content="Show Raw Values" Margin="289,15,463,386" IsChecked="False" VerticalContentAlignment="Center" IsThreeState="False" Checked="Show_Raw_Checked" Unchecked="Show_Raw_Unchecked"/>
         <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="ThermopileTempBox"   HorizontalAlignment="Left" Margin="585,177,0,0" VerticalAlignment="Top"   Width="82" Height="18"/>
         <Label Content="Thermopile Temperature" HorizontalAlignment="Left" Margin="442,172,0,0" VerticalAlignment="Top" Height="30" Width="144"/>
-        <Label x:Name="ThermopileTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="680,176,0,0" VerticalAlignment="Top"  Width="122" Height="19" />
+        <Label x:Name="ThermopileTempRaw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="680,176,0,0" VerticalAlignment="Top"  Width="122" Height="26" />
         <Rectangle Fill="WhiteSmoke" HorizontalAlignment="Left" Height="61" Margin="38,219,0,0" Stroke="Black" VerticalAlignment="Top" Width="758"/>
         <Label Content="Gas 1:" HorizontalAlignment="Left" Margin="44,245,0,0" VerticalAlignment="Top" Height="26" Width="47"/>
         <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="Gas1Box"   HorizontalAlignment="Left" Margin="88,249,0,0" VerticalAlignment="Top"   Width="72" Height="18"/>
@@ -257,6 +257,7 @@
         <Label Content="Gas 4:" HorizontalAlignment="Left" Margin="602,245,0,0" VerticalAlignment="Top" Height="26" Width="47"/>
         <TextBox IsEnabled="false" Style="{StaticResource RegularTextBox}"  Text="" x:Name="Gas4Box"   HorizontalAlignment="Left" Margin="650,249,0,0" VerticalAlignment="Top"   Width="74" Height="18"/>
         <Label x:Name="Gas4Raw" FontSize="9"  Content="--" HorizontalAlignment="Left" Margin="726,248,0,0" VerticalAlignment="Top"  Width="59" Height="20" />
+        <CheckBox x:Name="Show_Raw_Copy"  Content="Show Raw Values" Margin="289,15,410,271" IsChecked="False" VerticalContentAlignment="Center" IsThreeState="False" Checked="Show_Raw_Checked" Unchecked="Show_Raw_Unchecked"/>
 
 
 

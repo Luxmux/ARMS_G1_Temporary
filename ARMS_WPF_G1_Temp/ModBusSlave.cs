@@ -17,7 +17,7 @@ namespace ARMS_WPF_G1_Temp
         private int whichCycle = -1;
         private double firmwareVersion;
         private double model;
-        private int[] capabilities = new int[33] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+        private int[] capabilities = new int[50] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public bool continuousSet = false;
         private bool continuousFirstRead = false;
         private int chartMode = -1;

@@ -63,28 +63,12 @@ namespace ARMS_WPF_G1_Temp
         const int RS232_COMMS = 1;
         const int TCP_COMMS = 2;
 
-        const int HEAT_SINK_MAX_TEMP = 100;
-        const int HEAT_SINK_MIN_TEMP = -80;
-        const int SLED_TEC_MAX_TEMP = 100;
-        const int SLED_TEC_MIN_TEMP = 10;
-        const int SLED_TEC_MAX_RAW_TEMP = 61452;
-        const int SLED_TEC_MIN_RAW_TEMP = 22119;
-        const int PM_TEC_MAX_TEMP = 100;
-        const int PM_TEC_MIN_TEMP = 10;
-        const int PM_TEC_MAX_RAW_TEMP = 59649;
-        const int PM_TEC_MIN_RAW_TEMP = 25040;
-
 
         const int MW_UNITS = 0;
         const int DBM_UNITS = 1;
         const int CHART_CURRENT_MODE = 0;
         const int CHART_POWER_MODE = 1;
 
-        //Modulation Form Threading Functions
-        const int ENABLE_BUT_CLICK = 1;
-        const int MOD_BUT_CLICK = 2;
-        const int MOD_FREQ_SAVE_BUT_CLICK = 3;
-        const int DUTY_CYCLE_SAVE_BUT_CLICK = 4;
 
         //Master Thread Functions
         const int SLED_TEC_SAVE_TEMP_CLICK = 1;
@@ -137,15 +121,11 @@ namespace ARMS_WPF_G1_Temp
         private string[] logFileValues = new string[NUM_LOGFILE_FIELDS];
 
         public Dictionary<string, string> publicLogFilePathStrings = new Dictionary<string, string>();
-        public Dictionary<string, string> adminLogFilePathStrings = new Dictionary<string, string>();
 
         public static bool debugOn = false;
         Thread myThread;
-        private double slider1ManualModeSetpoint = 0;
 
         private double boardTemperature = 0;
-
-        private double sledTECTempGood = 0;
 
         public int selectedSlaveID = 0;
 
@@ -165,7 +145,7 @@ namespace ARMS_WPF_G1_Temp
         public Password passWindow;
         public About aboutWindow;
         public Defaults defaultsWindow;
-        public Photosensitivity photosensitivityWindow;
+     
 
         public int Current1Old = 0;
 
@@ -180,17 +160,9 @@ namespace ARMS_WPF_G1_Temp
         public string new_ComPort_string = "";
 
         List<string> Series0_axisX_label = new List<string>();
-
-
-        // UInt16 modFreqHighBytes = 0;
-        //UInt16 modFreqLowBytes = 0;
-        //UInt16 dutyCycleHighBytes = 0;
-        //UInt16 dutyCycleLowBytes = 0;
-
-
         
         private string fanSpeedSetPointEdit_temp;
-        private bool temp_too_hot = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -203,8 +175,6 @@ namespace ARMS_WPF_G1_Temp
             aboutWindow = new About(this);
             aboutWindow.Visibility = Visibility.Hidden;
 
-            photosensitivityWindow = new Photosensitivity(this);
-            photosensitivityWindow.Visibility = Visibility.Hidden;
 
             ConnectToBestSLED();
 
@@ -321,7 +291,6 @@ namespace ARMS_WPF_G1_Temp
                 List_PM.IsEnabled = false;
 
                 slider1TrackBar.IsEnabled = false;
-
                 setCurr1Edit.IsEnabled = false;
 
             });
@@ -670,7 +639,7 @@ namespace ARMS_WPF_G1_Temp
                     SetStateSignal(IDLE_CYCLE, mySlave.SlaveID);
 
                     UInt16[] readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 0, 1);
-                    //mySlave.ModbusID = readData[0];
+                    mySlave.ModbusID = readData[0];
 
                     ReadAndSetDefaultsAndCapabilities(mySlave); // do first check stuff for each slave id
                     aboutWindow.UpdateAboutGUI(mySlave);
@@ -726,16 +695,17 @@ namespace ARMS_WPF_G1_Temp
                 
             });
 
-            //read mode and capabilities
-            readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,7, 1);
-            mySlave.Mode = readData[0];
+            
 
-
-            readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,100, 34);
+            readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,100, 50);
             mySlave.Capabilities[0] = readData[0]; //SLED 1: 0 if DNE otherwise wavelength
 
+            //mySlave.Capabilities[1]
+            //mySlave.Capabilities[2]
+            //mySlave.Capabilities[3]
+            //mySlave.Capabilities[4]
+            //mySlave.Capabilities[5]
             mySlave.Capabilities[6] = (int)Math.Round(((readData[6]) * 2.5 / (65535.0) * 1000), 1); //SLED 1: Max current limit & max manufacture default
-
             this.Dispatcher.Invoke(() =>
             {
                 if (mySlave.Capabilities[0] > 0)
@@ -745,27 +715,53 @@ namespace ARMS_WPF_G1_Temp
                     setCurr1Edit.Text = "0.0 mA";
                 }
             });
+            //mySlave.Capabilities[7]
+            //mySlave.Capabilities[8]
+            //mySlave.Capabilities[9]
+            //mySlave.Capabilities[10]
+            //mySlave.Capabilities[11]
 
+            mySlave.Capabilities[12] = readData[12]; //Thermopile Thermistor 0 if DNE, 1 if enabled
 
+            //mySlave.Capabilities[13]
+            //mySlave.Capabilities[14]
+            //mySlave.Capabilities[15]
+            //mySlave.Capabilities[16]
+            //mySlave.Capabilities[17]
+            mySlave.Capabilities[18] = (int)(Math.Round(1.25 * 1000 * (double) readData[18] / (65535.0 * 1.5),0)); //SLED 1 PC current manufacture default
+            //mySlave.Capabilities[19]
+            //mySlave.Capabilities[20]
+            //mySlave.Capabilities[21]
+            //mySlave.Capabilities[22]
+            //mySlave.Capabilities[23]
+            mySlave.Capabilities[24] = readData[24];
+            //mySlave.Capabilities[25]
+            //mySlave.Capabilities[26]
+            //mySlave.Capabilities[27]
+            //mySlave.Capabilities[28]
+            //mySlave.Capabilities[29]
+            //mySlave.Capabilities[30]
+            //mySlave.Capabilities[31]
+            mySlave.Capabilities[32] = readData[32];            //Board Temperature
 
+            mySlave.Capabilities[45] = readData[45];
             this.Dispatcher.Invoke(() =>
             {
-
-                FanSpeedSetBut.IsEnabled = true;
-                fanSpeedSetPointEdit.IsEnabled = true;
+                if (mySlave.Capabilities[45] > 0)
+                {
+                    FanSpeedSetBut.IsEnabled = true;
+                    fanSpeedSetPointEdit.IsEnabled = true;
+                }
             });
 
-            //capabilities[13] =
-            mySlave.Capabilities[14] = readData[14];    //Heat Sink Temp: 0 if DNE, 1 if enabled
-            mySlave.Capabilities[15] = readData[15];    //SLED 6 Submount Temp: 0 if DNE, 1 if enabled
+            mySlave.Capabilities[46] = readData[46];
+            mySlave.Capabilities[47] = readData[47];
+            mySlave.Capabilities[48] = readData[48];
+            mySlave.Capabilities[49] = readData[49];
             this.Dispatcher.Invoke(() =>
             {
-
-                //Capabilities 26: PM TEC Default Temp
-                mySlave.Capabilities[16] = (readData[16]);
-
-                if (mySlave.Capabilities[16] != 0)
-                {
+                //if (mySlave.Capabilities[46] != 0 || mySlave.Capabilities[47] != 0 || mySlave.Capabilities[48] != 0 || mySlave.Capabilities[49] != 0)
+                //{
                     Start_PM.IsEnabled = true;
                     Stop_PM.IsEnabled = false;
                     Clear_PM.IsEnabled = true;
@@ -773,26 +769,17 @@ namespace ARMS_WPF_G1_Temp
                     ExportBut_PM.IsEnabled = false;
                     List_PM.IsEnabled = true;
                     List_PM.Text = Gas1_Raw.Content.ToString();
-                    mySlave.PMWavelength = 1550;
-
-
-                }
+                //}
             });
 
-            mySlave.Capabilities[18] = (int)(2.5 * ((readData[18]) / 65535.0) * 1000); //SLED 1 PC current manufacture default
-
-
-            mySlave.Capabilities[32] = readData[32];            //Board Temperature
-
+            //read mode
+            readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 8, 1);
+            mySlave.Mode = readData[0];
+            mySlave.LampEnable = readData[0];
+            mySlave.Locked = readData[0];
 
             this.Dispatcher.Invoke(() =>
             {
-
-                readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 8, 1);
-                if (readData[0] == 0)
-                    mySlave.Locked = LOCKED;
-                else
-                    mySlave.Locked = UNLOCKED;
 
                 if (mySlave.Locked == LOCKED)
                 {
@@ -800,52 +787,12 @@ namespace ARMS_WPF_G1_Temp
                     PrintStringToDiagnostics("Lamp is Locked");
                     mySlave.LampEnable = 0;
 
-                    //disable modulation button
-
-                    //Check if sled Math.Power is on according to the unit
-                    UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID,16, 1);
-
-                    if (readData2[0] == 1)
-                    {
-                        sledsOnBut.Content = "         On ";
-                        sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
-                    }
-                    else
-                    {
-                        mySlave.SledsAreOn = 0;
-                        sledsOnBut.Content = "         On ";
-                        sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
-
-                    }
-
-
-
                     maxBut.IsEnabled = false;
                     minBut.IsEnabled = false;
                     sledsOnBut.IsEnabled = false;
-
                     slider1TrackBar.IsEnabled = false;
-
                     setCurr1Edit.IsEnabled = false;
-
-
-                    //capabilities
-                    readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
-                    if (mySlave.Capabilities[0] > 0)
-                    {
-                        //Each poll cycle read current from 20-25 and set slider accordingly
-
-                        slider1ManualModeSetpoint = readData2[0] * 2.5 / 65535.0 * 1000;
-                        if (slider1ManualModeSetpoint > 550) //maximum slider
-                        {
-                            slider1ManualModeSetpoint = 550;
-                        }
-                        Slider1Changed = slider1ManualModeSetpoint;
-                        Slider1_temp = slider1ManualModeSetpoint;
-
-                    }
                 }
-                
                 else if (mySlave.Locked == UNLOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
@@ -853,50 +800,46 @@ namespace ARMS_WPF_G1_Temp
                     whichMode = "Unlocked";
                     mySlave.LampEnable = 1;
 
-                        //Check SLEDs on
-                    UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID,16, 1);
-                        if (readData2[0] == 1)
-                        {
-                            mySlave.SledsAreOn = 1;
 
-                            sledsOnBut.Content = "         On ";
-                            sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
-                            UInt16[] readData3 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 6);
-                            //If SLEDs are on, enable track bars and update position
-                            if (mySlave.Capabilities[0] != 0)
-                            {
-                                Slider1Changed = readData3[0] * 2.5 / 65535.0 * 1000;
-                                Slider1_temp = readData3[0] * 2.5 / 65535.0 * 1000;
-                                slider1TrackBar.IsEnabled = true;
-                                setCurr1Edit.IsEnabled = true;
-                            }
+                    maxBut.IsEnabled = true;
+                    minBut.IsEnabled = true;
+                    sledsOnBut.IsEnabled = true;
+                    slider1TrackBar.IsEnabled = true;
+                    setCurr1Edit.IsEnabled = true;
 
-                            maxBut.IsEnabled = true;
-                            minBut.IsEnabled = true;
-
-                            sledsOnBut.IsEnabled = true;
-
-                        }
-                        else
-                        {
-                            mySlave.SledsAreOn = 0;
-
-                            maxBut.IsEnabled = true;
-                            minBut.IsEnabled = true;
-                            sledsOnBut.IsEnabled = true;
-
-
-                            //If SLED TEC is off, disable sliders
-                            slider1TrackBar.IsEnabled = true;
-                            setCurr1Edit.IsEnabled = true;
-
-                            Slider1Changed = 0;
-                            Slider1_temp = 0;
-                        }
-                    
                 }
-            });
 
+
+                //Check SLEDs on
+                readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 16, 1);
+                if (readData[0] == 1)
+                {
+                    mySlave.SledsAreOn = 1;
+
+                    sledsOnBut.Content = "         On ";
+                    sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
+                    UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
+                    //If SLEDs are on, enable track bars and update position
+                    if (mySlave.Capabilities[0] != 0)
+                    {
+                        Slider1Changed = readData2[0] * 1.25 / (65535.0 * 1.5) * 1000;
+                        Slider1_temp = readData2[0] * 1.25 / (65535.0 * 1.5) * 1000;
+
+                    }
+                }
+                else
+                {
+                    mySlave.SledsAreOn = 0;
+                    sledsOnBut.Content = "         Off ";
+                    sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+                    Slider1Changed = 0;
+                    Slider1_temp = 0;
+                }
+
+
+
+
+            });
 
             //defaults
             //SetCommunicationsDefaultValues
@@ -1040,85 +983,57 @@ namespace ARMS_WPF_G1_Temp
 
             s += (mySlave.ActualCurr1ReadVal * 1000).ToString("0.00"); s += ",";
 
-            s += (mySlave.MonDiode1ReadVal * 1000).ToString("0.00"); s += ",";
 
-            s += mySlave.STECOn.ToString("0.00"); s += ",";
-            s += sledTECTempGood.ToString("0.00"); s += ",";
-            s += mySlave.SledTECTempSetpoint.ToString("0.00"); s += ",";
-            s += mySlave.SledTECTemp.ToString("0.00"); s += ",";
-            s += mySlave.OSEBodyCurr.ToString("0.00"); s += ",";          //OSE Body Current. Version 5
-            if (mySlave.OSEHeatOrCool == 0)
+            if (mySlave.LampEnable == 0)
             {
-                s += "Cooling"; s += ",";
+                s += "Locked"; s += ",";
             }
             else
             {
-                s += "Heating"; s += ",";
+                s += "Unlocked"; s += ",";
             }
-            s += mySlave.OSEBodyCapacity.ToString("0.00"); s += ",";   //OSE Body Capacity. Version 5
-
 
             s += mySlave.BoardTemperatureN.ToString("0.00"); s += ",";
             s += mySlave.ThermopileTemp.ToString("0.00"); s += ",";
 
-            s += mySlave.PMWavelength.ToString("0.00"); s += ",";
-            s += (mySlave.PMRead * 1000000).ToString("0.00"); s += ",";
-            s += mySlave.PMPower.ToString("0.00"); s += ",";
-            s += mySlave.PMPower.ToString("0.00"); s += ",";
-
-            s += mySlave.PMTECTemp.ToString("0.00"); s += ",";            //PM Temperature. Version 7
-            s += mySlave.PMTECTempSetpoint.ToString("0.00"); s += ",";            //PM Temperature Setpoint. Version 7
-            s += mySlave.PMTECCurr.ToString("0.00"); s += ",";            //PM Current. Version 7
-            s += mySlave.PMTECCapacity.ToString("0.00"); s += ",";     //PM Capacity. Version 7
+            s += mySlave.Gas1.ToString("0.00"); s += ",";
+            s += mySlave.Gas2.ToString("0.00"); s += ",";
+            s += mySlave.Gas3.ToString("0.00"); s += ",";
+            s += mySlave.Gas4.ToString("0.00"); s += ",";
 
             s += mySlave.FanSpeed.ToString("0.00"); s += ",";
             s += mySlave.FanSpeed.ToString("0.00"); s += ",";
-            s += modeString; s += ",";
 
 
             //Raw Values
-            s += mySlave.SledsAreOn.ToString("0.00"); s += ",";
+            s += mySlave.SledsAreOn.ToString("0"); s += ",";
 
-            s += mySlave.Sled1CurrentSetpointRaw.ToString("0.00"); s += ",";
+            s += mySlave.Sled1CurrentSetpointRaw.ToString("0"); s += ",";
 
-            s += mySlave.Sled1CurrSenseRaw.ToString("0.00"); s += ",";
+            s += mySlave.Sled1CurrSenseRaw.ToString("0"); s += ",";
 
-            s += mySlave.MonDiode1RawLogString.ToString("0.00"); s += ",";
-
-            s += mySlave.STECOn.ToString("0.00"); s += ",";
-            s += sledTECTempGood.ToString("0.00"); s += ",";
-            s += mySlave.SledTECTempSetpointRaw.ToString("0.00"); s += ",";
-            s += mySlave.SledTECTempRaw.ToString("0.00"); s += ",";
-            s += mySlave.OSEBodyCurrRaw.ToString("0.00"); s += ",";            //OSE Body Current. Version 5
-            if (mySlave.OSEHeatOrCool == 0)
+            if (mySlave.LampEnable == 0)
             {
-                s += "Cooling"; s += ",";
+                s += "Locked"; s += ",";
             }
             else
             {
-                s += "Heating"; s += ",";
+                s += "Unlocked"; s += ",";
             }
-            s += mySlave.OSEBodyCapacityRaw.ToString("0.00"); s += ",";     //OSE Body Capacity. Version 5
+
+            s += mySlave.BoardTemperatureRaw.ToString("0"); s += ",";
+            s += mySlave.ThermopileTempRaw.ToString("0"); s += ",";        //We are putting board temperature raw into heat sink raw as well
 
 
-            s += mySlave.BoardTemperatureRaw.ToString("0.00"); s += ",";
-            s += mySlave.ThermopileTempRaw.ToString("0.00"); s += ",";        //We are putting board temperature raw into heat sink raw as well
+            s += mySlave.Gas1Raw.ToString("0"); s += ",";
+            s += mySlave.Gas2Raw.ToString("0"); s += ",";
+            s += mySlave.Gas3Raw.ToString("0"); s += ",";
+            s += mySlave.Gas4Raw.ToString("0"); s += ",";
 
 
-            s += mySlave.PMWavelength.ToString("0.00"); s += ",";
-            s += mySlave.PMReadRaw.ToString("0.00"); s += ",";
-            s += mySlave.PMPowerRaw.ToString("0.00"); s += ",";
-            s += mySlave.PMPowerRaw.ToString("0.00"); s += ",";
+            s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
+            s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
 
-            s += mySlave.PMTECTempRaw.ToString("0.00"); s += ",";            //PM Temperature. Version 7
-            s += mySlave.PMTECTempSetpointRaw.ToString("0.00"); s += ",";            //PM Temperature Setpoint. Version 7
-            s += mySlave.PMTECCurrRaw.ToString("0.00"); s += ",";            //PM Current. Version 7
-            s += mySlave.PMTECCapacityRaw.ToString("0.00"); s += ",";     //PM Capacity. Version 7
-
-
-            s += mySlave.FanSpeedReadRaw.ToString("0.00"); s += ",";
-            s += mySlave.FanSpeedReadRaw.ToString("0.00"); s += ",";
-            s += modeString; s += ",";
 
 
             mySlave.slavePublicLogFileFsWriter.Write(s + "\n");
@@ -1240,7 +1155,7 @@ namespace ARMS_WPF_G1_Temp
                                     {
                                         this.Dispatcher.Invoke(() =>
                                         {
-                                            
+
                                             PrintStringToDiagnostics("Lamp is Locked.");
                                         });
                                     }
@@ -1255,28 +1170,29 @@ namespace ARMS_WPF_G1_Temp
 
                                     //Read realtime currents. Sliders are set in the Synchronized UpdatePolledVariables function
                                     //Current in manual mode is dictated by hardware.
-                                    ushort[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 6);
                                     if (mySlave.Capabilities[0] > 0)
                                     {
-                                        //Each poll cycle read current from 20-25 and set slider accordingly
-
-                                        slider1ManualModeSetpoint = readData2[0] * 2.5 / 65535.0 * 1000;
-                                        if (slider1ManualModeSetpoint > 550) //maximum slider
+                                        if (mySlave.SledsAreOn == 1)
                                         {
-                                            slider1ManualModeSetpoint = 550;
+                                            UInt16[] readData2 = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
+                                            //If SLEDs are on, enable track bars and update position
+                                            if (mySlave.Capabilities[0] != 0)
+                                            {
+                                                Slider1Changed = readData2[0] * 1.25 / (65535.0 * 1.5) * 1000;
+                                                Slider1_temp = readData2[0] * 1.25 / (65535.0 * 1.5) * 1000;
+                                            }
                                         }
-                                        Slider1Changed = slider1ManualModeSetpoint;
-                                        Slider1_temp = slider1ManualModeSetpoint;
+                                        else
+                                        {
+                                            Slider1Changed = 0;
+                                            Slider1_temp = 0;
+                                        }
                                     }
+
+                                    ///////////////////////////////// PC MODE CONTINUOUS READ SELECTED /////////////////////////////////
                                 }
-
-
-                                ///////////////////////////////// PC MODE CONTINUOUS READ SELECTED /////////////////////////////////
-
                                 else if (mySlave.Locked == UNLOCKED)
                                 {
-
-
                                     //Display mode changed if needed
                                     if (mySlave.Mode != mySlave.CurrentMode)
                                     {
@@ -1291,12 +1207,12 @@ namespace ARMS_WPF_G1_Temp
                                             });
 
                                         }
-                                        
+
                                         PrintStringToDiagnostics("Lamp is Unlocked");
                                     }
                                     mySlave.CurrentMode = mySlave.Mode;
                                     //modeString is used for logfile string
-                                 
+
                                     //Check if sled  Power is on according to the unit
                                     readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 16, 1);
                                     mySlave.SledsAreOn = readData[0];
@@ -1388,8 +1304,6 @@ namespace ARMS_WPF_G1_Temp
                                         minBut.IsEnabled = false;
                                         sledsOnBut.IsEnabled = false;
                                         setCurr1Edit.IsEnabled = false;
-
-
                                     }
                                     else if (mySlave.Locked == UNLOCKED)
                                     {
@@ -1403,20 +1317,12 @@ namespace ARMS_WPF_G1_Temp
                                         }
                                         else
                                         {
-                                            //If SLEDs are on, enable track bars
-                                            if (!slider1TrackBar.IsEnabled && mySlave.Capabilities[0] != 0)
-                                            {
                                                 slider1TrackBar.IsEnabled = true;
                                                 setCurr1Edit.IsEnabled = true;
-                                            }
-
                                             maxBut.IsEnabled = true;
                                             minBut.IsEnabled = true;
                                         }
-
                                         sledsOnBut.IsEnabled = true;
-
-
                                     }
 
                                     IInputElement focusedControl = FocusManager.GetFocusedElement(this);
@@ -1431,7 +1337,7 @@ namespace ARMS_WPF_G1_Temp
                                         {
                                             if (tBox.Name != "setCurr1Edit")
                                             {
-                                                mySlave.Sled1CurrentSetpointRaw = Math.Round((0.001 * 65535 * Slider1_temp / 2.5), 0);
+                                                mySlave.Sled1CurrentSetpointRaw = Math.Round((0.001 * 1.5 * 65535 * Slider1_temp / 1.25), 0);
                                                 mySlave.Sled1CurrentSetpoint = Slider1_temp;
                                                 if (showRawValues)
                                                 {
@@ -1449,7 +1355,7 @@ namespace ARMS_WPF_G1_Temp
                                         }
                                         else
                                         {
-                                            mySlave.Sled1CurrentSetpointRaw = Math.Round((0.001 * 65535 * Slider1_temp / 2.5), 0);
+                                            mySlave.Sled1CurrentSetpointRaw = Math.Round((0.001 * 1.5 * 65535 * Slider1_temp / 1.25), 0);
                                             mySlave.Sled1CurrentSetpoint = Slider1_temp;
                                             if (showRawValues)
                                             {
@@ -1479,7 +1385,7 @@ namespace ARMS_WPF_G1_Temp
                                     }
                                     else
                                     {
-                                        mySlave.ActualCurr1ReadVal = 5.0 * (mySlave.Sled1CurrSenseRaw / (65535.0));
+                                        mySlave.ActualCurr1ReadVal = 1.25 * mySlave.Sled1CurrSenseRaw / (1.5 * 65535.0);
                                     }
                                     //Current Sense Values 
                                     if ((showRawValues))
@@ -1499,7 +1405,7 @@ namespace ARMS_WPF_G1_Temp
 
                                         if (mySlave.Capabilities[0] != 0)
                                         {
-                                            actualCurr1Edit.Text = (2.5 * (mySlave.Sled1CurrSenseRaw * 1000 / (65535.0))).ToString("0") + " mA"; 
+                                            actualCurr1Edit.Text =(mySlave.ActualCurr1ReadVal * 1000).ToString("0.0") + " mA"; 
                                         }
                                         else
                                         {
@@ -1509,15 +1415,7 @@ namespace ARMS_WPF_G1_Temp
 
                                     //For all other versions show real Heat Sink Temperature
 
-                                    if (showRawValues)
-                                    {
-                                        thermopileTempEdit.Text = mySlave.ThermopileTempRaw.ToString("");
-
-                                    }
-                                    else
-                                    {
-                                        thermopileTempEdit.Text = mySlave.ThermopileTemp.ToString("0.0 ⁰C");
-                                    }
+                                    
 
 
                                     focusedControl = FocusManager.GetFocusedElement(this);
@@ -1573,24 +1471,32 @@ namespace ARMS_WPF_G1_Temp
                                         FanSpeedSetBut.IsDefault = false;
                                     }
 
-                                    readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 20, 35);
-                                    //Board Temperature
 
                                     //Board Temperature reg 40
-                                    mySlave.BoardTemperatureRaw = readData[20];
-
+                                    //if (mySlave.Capabilities[XX] == 1) //David uncomment this lines when capabilities are correct with the Capability assigned to board thermistor
+                                    //{
+                                    readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 40, 1);
+                                    mySlave.BoardTemperatureRaw = readData[0];
                                     boardTemperature = CalculateBoardTempFromReg(mySlave.BoardTemperatureRaw, (int)mySlave.FirmwareVersion);
                                     mySlave.BoardTemperatureN = boardTemperature;
+                                    //}
 
-                                    //Thermopile Temp
-                                    if (mySlave.Capabilities[14] == 1)
-                                    {
-                                        mySlave.ThermopileTemp = CalculateThermopileTempFromReg(mySlave.ThermopileTempRaw, (int)mySlave.FirmwareVersion);
-                                    }
-
-                                    //SLED TEC Temperature Reading: Input Register 32
-                                    mySlave.ThermopileTempRaw = readData[12];
+                                    //Thermopile Temp 
+                                    //if (mySlave.Capabilities[XX] == 1) //David uncomment this lines when capabilities are correct with the Capability assigned to thermopile thermistor
+                                    //{
+                                    readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 32, 1);
+                                    mySlave.ThermopileTempRaw = readData[0];
                                     mySlave.ThermopileTemp = CalculateThermopileTempFromReg(mySlave.ThermopileTempRaw, (int)mySlave.FirmwareVersion);
+                                    if (showRawValues)
+                                    {
+                                        thermopileTempEdit.Text = mySlave.ThermopileTempRaw.ToString("");
+
+                                    }
+                                    else
+                                    {
+                                        thermopileTempEdit.Text = mySlave.ThermopileTemp.ToString("0.0 ⁰C");
+                                    }
+                                    //}
 
 
                                     // Get fan speed
@@ -1610,18 +1516,30 @@ namespace ARMS_WPF_G1_Temp
                                     mySlave.Gas4Raw = readData[3];
                                     mySlave.Gas4 = Math.Round((2.5 * (double)mySlave.Gas4Raw / 65535.0), 1);
 
-                                    Gas1Edit.Text = mySlave.Gas1 + " V";
-                                    Gas2Edit.Text = mySlave.Gas2 + " V";
-                                    Gas3Edit.Text = mySlave.Gas3 + " V";
-                                    Gas4Edit.Text = mySlave.Gas4 + " V";
+                                    
+                                    if (showRawValues)
+                                    {
+                                        Gas1Edit.Text = mySlave.Gas1Raw.ToString("0");
+                                        Gas2Edit.Text = mySlave.Gas2Raw.ToString("0");
+                                        Gas3Edit.Text = mySlave.Gas3Raw.ToString("0");
+                                        Gas4Edit.Text = mySlave.Gas4Raw.ToString("0");
+
+                                    }
+                                    else
+                                    {
+                                        Gas1Edit.Text = mySlave.Gas1.ToString("0.0") + " V";
+                                        Gas2Edit.Text = mySlave.Gas2.ToString("0.0") + " V";
+                                        Gas3Edit.Text = mySlave.Gas3.ToString("0.0") + " V";
+                                        Gas4Edit.Text = mySlave.Gas4.ToString("0.0") + " V";
+                                    }
+
 
                                     // if locked set slider to setcurrent
 
                                     if (mySlave.Locked == LOCKED)
                                     {
                                         readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
-                                        
-                                        slider1TrackBar.Value = readData[0] * 2.5 / 65535.0 * 1000;
+                                        slider1TrackBar.Value = readData[0] * 1.25 / (65535.0 * 1.5) * 1000;
 
                                     }
 
@@ -1671,10 +1589,10 @@ namespace ARMS_WPF_G1_Temp
                                     if (List_PM.Text == Gas1_Raw.Content.ToString())
                                     {
 
-                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.SledTECCapacity, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
-                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.SledTECCapacity, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas1Raw, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas1Raw, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
                                         ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
-                                        ValuesChart.Series[0].Values.Add(mySlave.SledTECCapacity);
+                                        ValuesChart.Series[0].Values.Add((double) mySlave.Gas1Raw);
                                         Series0_axisX_label.Add(DateTime.Now.ToString());
                                         if ((int)Series0_axisX_label.Count > graphing_limit)
                                         {
@@ -1682,13 +1600,115 @@ namespace ARMS_WPF_G1_Temp
                                             Series0_axisX_label.RemoveRange(0, 1);
                                             ValuesChart.Series[0].Values.RemoveAt(0);
                                         }
+                                    }
+                                    else if (List_PM.Text == Gas1_V.Content.ToString())
+                                    {
 
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas1, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas1, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[1].Values.Add(mySlave.Gas1);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[1].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas2_Raw.Content.ToString())
+                                    {
 
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas2Raw, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas2Raw, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[2].Values.Add((double) mySlave.Gas2Raw);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[2].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas2_V.Content.ToString())
+                                    {
+
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas2, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas2, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[3].Values.Add(mySlave.Gas2);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[3].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas3_Raw.Content.ToString())
+                                    {
+
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas3Raw, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas3Raw, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[4].Values.Add((double) mySlave.Gas3Raw);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[4].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas3_V.Content.ToString())
+                                    {
+
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas3, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas3, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[5].Values.Add(mySlave.Gas3);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[5].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas4_Raw.Content.ToString())
+                                    {
+
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas4Raw, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas4Raw, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[4].Values.Add((double) mySlave.Gas4Raw);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[4].Values.RemoveAt(0);
+                                        }
+                                    }
+                                    else if (List_PM.Text == Gas4_V.Content.ToString())
+                                    {
+
+                                        ValuesChart_YAxis.MinValue = Math.Round(Math.Min(mySlave.Gas4, ValuesChart_YAxis.MinValue + 0.1) - 0.1, 2);
+                                        ValuesChart_YAxis.MaxValue = Math.Round(Math.Max(mySlave.Gas4, ValuesChart_YAxis.MaxValue - 0.1) + 0.1, 2);
+                                        ValuesChart_YAxis_Ticks.Step = Math.Round((ValuesChart_YAxis.MaxValue - ValuesChart_YAxis.MinValue) / 21, 3);
+                                        ValuesChart.Series[5].Values.Add(mySlave.Gas4);
+                                        Series0_axisX_label.Add(DateTime.Now.ToString());
+                                        if ((int)Series0_axisX_label.Count > graphing_limit)
+                                        {
+                                            // remove that number of items from the start of the list
+                                            Series0_axisX_label.RemoveRange(0, 1);
+                                            ValuesChart.Series[5].Values.RemoveAt(0);
+                                        }
                                     }
 
                                 });
 
-                                //Thread.Sleep(100);
                             }
 
                         }
@@ -1701,18 +1721,14 @@ namespace ARMS_WPF_G1_Temp
             catch (Exception e)
             {
                 looping = false;
-                temp_too_hot = false;
                 ClearMainWindow();
-                PrintStringToDiagnostics("Connection to SLED lost. Returning to Initialization..." + e);
+                PrintStringToDiagnostics("Connection to ARMS lost. Returning to Initialization..." + e);
                 selectedSlaveID = 0;
                 foundbestsled = false;
                 foreach (ModBusSlave mySlave in modbusSlaveList)
                 {
                     if (mySlave != null)
                     {
-                        if (mySlave.slaveAdminLogFileFsWriter != null)
-                            mySlave.slaveAdminLogFileFsWriter.Close();
-
                         if (mySlave.slavePublicLogFileFsWriter != null)
                             mySlave.slavePublicLogFileFsWriter.Close();
 
@@ -1740,7 +1756,7 @@ namespace ARMS_WPF_G1_Temp
                 if (bytesRead[0] == 0 && bytesRead[1] == 0 && bytesRead[2] == 0 && bytesRead[3] == 0 && bytesRead[4] == 0)
                 {
                     looping = false;
-                    temp_too_hot = false;
+
                     ClearMainWindow();
                     PrintStringToDiagnostics("Connection to SLED lost. Returning to Initialization...");
                     selectedSlaveID = 0;
@@ -1805,6 +1821,11 @@ namespace ARMS_WPF_G1_Temp
                 ValuesChart.Series[0].Values.Clear();
                 ValuesChart.Series[1].Values.Clear();
                 ValuesChart.Series[2].Values.Clear();
+                ValuesChart.Series[3].Values.Clear();
+                ValuesChart.Series[4].Values.Clear();
+                ValuesChart.Series[5].Values.Clear();
+                ValuesChart.Series[6].Values.Clear();
+                ValuesChart.Series[7].Values.Clear();
                 ValuesChart_YAxis.MinValue = Math.Round((double)1000000000, 2);
                 ValuesChart_YAxis.MaxValue = Math.Round((double)-1000000000, 2);
                 Series0_axisX_label.Clear();
@@ -1816,8 +1837,6 @@ namespace ARMS_WPF_G1_Temp
       
         void UpdateAdminVariables(ModBusSlave mySlave)
         {
-
-            ///////Itziar need to finish this part
             this.Dispatcher.Invoke(() =>
             {
                 //Set the values on About Window
@@ -1827,6 +1846,16 @@ namespace ARMS_WPF_G1_Temp
                       
                 adminWindow.BoardTempBox.Text = mySlave.BoardTemperatureN.ToString("0.0") + (" ⁰C");
                 adminWindow.BoardTempRaw.Content = mySlave.BoardTemperatureRaw;
+
+                adminWindow.Gas1Box.Text = mySlave.Gas1.ToString("0.0") + (" V");
+                adminWindow.Gas1Raw.Content = mySlave.Gas1Raw;
+                adminWindow.Gas2Box.Text = mySlave.Gas2.ToString("0.0") + (" V");
+                adminWindow.Gas2Raw.Content = mySlave.Gas2Raw;
+                adminWindow.Gas3Box.Text = mySlave.Gas3.ToString("0.0") + (" V");
+                adminWindow.Gas3Raw.Content = mySlave.Gas3Raw;
+                adminWindow.Gas4Box.Text = mySlave.Gas4.ToString("0.0") + (" V");
+                adminWindow.Gas4Raw.Content = mySlave.Gas4Raw;
+
             });
         }
 

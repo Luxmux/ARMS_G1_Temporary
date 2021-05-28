@@ -72,9 +72,6 @@
       <DependentUpon>Admin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Photosensitivity.xaml.cs">
-      <DependentUpon>Photosensitivity.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Password.xaml.cs">
       <DependentUpon>Password.xaml</DependentUpon>
     </Compile>
@@ -121,10 +118,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Photosensitivity.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Password.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,7 +165,6 @@
     <Content Include="bin\Debug\ComponentTest.pdb" />
     <Content Include="bin\Debug\SliderWithTickLabels.dll" />
     <Content Include="bin\Debug\SliderWithTickLabels.pdb" />
-    <Resource Include="Photosensitivity_curve.JPG" />
     <Resource Include="icon.JPG" />
     <Resource Include="lumuxlogo_square.png" />
     <Resource Include="logo2.png" />
