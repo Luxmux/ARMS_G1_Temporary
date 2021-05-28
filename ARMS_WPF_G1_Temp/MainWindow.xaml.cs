@@ -1603,12 +1603,17 @@ namespace ARMS_WPF_G1_Temp
                                     readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 35, 4);
                                     mySlave.Gas1Raw = readData[0];
                                     mySlave.Gas1 = Math.Round((2.5 * (double) mySlave.Gas1Raw / 65535.0), 1);
-                                    mySlave.Gas2Raw = readData[0];
+                                    mySlave.Gas2Raw = readData[1];
                                     mySlave.Gas2 = Math.Round((2.5 * (double)mySlave.Gas2Raw / 65535.0), 1);
-                                    mySlave.Gas3Raw = readData[0];
+                                    mySlave.Gas3Raw = readData[2];
                                     mySlave.Gas3 = Math.Round((2.5 * (double)mySlave.Gas3Raw / 65535.0), 1);
-                                    mySlave.Gas4Raw = readData[0];
+                                    mySlave.Gas4Raw = readData[3];
                                     mySlave.Gas4 = Math.Round((2.5 * (double)mySlave.Gas4Raw / 65535.0), 1);
+
+                                    Gas1Edit.Text = mySlave.Gas1 + " V";
+                                    Gas2Edit.Text = mySlave.Gas2 + " V";
+                                    Gas3Edit.Text = mySlave.Gas3 + " V";
+                                    Gas4Edit.Text = mySlave.Gas4 + " V";
 
                                     // if locked set slider to setcurrent
 
