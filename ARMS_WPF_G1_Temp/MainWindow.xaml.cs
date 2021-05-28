@@ -679,7 +679,7 @@ namespace ARMS_WPF_G1_Temp
         private void ReadAndSetDefaultsAndCapabilities(ModBusSlave mySlave)
         {
 
-            //Itziar Finish this part
+            //Itziar David Finish this part
             //read firmware 
             UInt16[] readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID,6, 1);
             mySlave.FirmwareVersion = readData[0];
@@ -705,7 +705,7 @@ namespace ARMS_WPF_G1_Temp
             //mySlave.Capabilities[3]
             //mySlave.Capabilities[4]
             //mySlave.Capabilities[5]
-            mySlave.Capabilities[6] = (int)Math.Round(((readData[6]) * 2.5 / (65535.0) * 1000), 1); //SLED 1: Max current limit & max manufacture default
+            mySlave.Capabilities[6] = (int)Math.Round(((readData[6]) * 1.25 / (65535.0 *1.5) * 1000), 1); //SLED 1: Max current limit & max manufacture default
             this.Dispatcher.Invoke(() =>
             {
                 if (mySlave.Capabilities[0] > 0)
@@ -792,13 +792,21 @@ namespace ARMS_WPF_G1_Temp
                     sledsOnBut.IsEnabled = false;
                     slider1TrackBar.IsEnabled = false;
                     setCurr1Edit.IsEnabled = false;
-                }
+
+                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(34, 139, 34));
+                    lampEnableBut.Content = "         Locked";
+
+                    
+
+                    }
                 else if (mySlave.Locked == UNLOCKED)
                 {
                     mySlave.CurrentMode = mySlave.Mode;
                     PrintStringToDiagnostics("Lamp is unlocked");
                     whichMode = "Unlocked";
                     mySlave.LampEnable = 1;
+                    lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+                    lampEnableBut.Content = "         UnLocked";
 
 
                     maxBut.IsEnabled = true;
@@ -1229,7 +1237,7 @@ namespace ARMS_WPF_G1_Temp
 
                                             if (Current1Old != (int)readData[0])
                                             {
-                                                Slider1_temp = readData[0] * 2.5 / 65535.0 * 1000;
+                                                Slider1_temp = readData[0] * 1.25 / (65535*1.5) * 1000; 
                                                 Slider1Changed = -1;
                                                 Current1Old = (int)readData[0];
                                             }
@@ -1237,7 +1245,7 @@ namespace ARMS_WPF_G1_Temp
                                             {
                                                 if (Slider1Changed > -1)
                                                 {
-                                                    currentToSend = (UInt16)(0.001 * 65535 * Slider1_temp / 2.5);
+                                                    currentToSend = (UInt16)(0.001 * 65535 * 1.5 * Slider1_temp / 1.25); 
                                                     mbClient.WriteSingleRegister((byte)mySlave.ModbusID, 10, currentToSend);
                                                     if (Current1Old == currentToSend)
                                                     {
