@@ -1516,13 +1516,13 @@ namespace ARMS_WPF_G1_Temp
                                     //Gas Reading
                                     readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 35, 4);
                                     mySlave.Gas1Raw = readData[0];
-                                    mySlave.Gas1 = Math.Round((2.5 * (double) mySlave.Gas1Raw / 65535.0), 1);
+                                    mySlave.Gas1 = Math.Round((5 * (double) mySlave.Gas1Raw / 65535.0), 1);
                                     mySlave.Gas2Raw = readData[1];
-                                    mySlave.Gas2 = Math.Round((2.5 * (double)mySlave.Gas2Raw / 65535.0), 1);
+                                    mySlave.Gas2 = Math.Round((5 * (double)mySlave.Gas2Raw / 65535.0), 1);
                                     mySlave.Gas3Raw = readData[2];
-                                    mySlave.Gas3 = Math.Round((2.5 * (double)mySlave.Gas3Raw / 65535.0), 1);
+                                    mySlave.Gas3 = Math.Round((5 * (double)mySlave.Gas3Raw / 65535.0), 1);
                                     mySlave.Gas4Raw = readData[3];
-                                    mySlave.Gas4 = Math.Round((2.5 * (double)mySlave.Gas4Raw / 65535.0), 1);
+                                    mySlave.Gas4 = Math.Round((5 * (double)mySlave.Gas4Raw / 65535.0), 1);
 
                                     
                                     if (showRawValues)
