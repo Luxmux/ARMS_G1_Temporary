@@ -122,12 +122,19 @@
         </Style>
     </Window.Resources>
     <Grid Margin="0,0,-17,-24">
-        <TextBox Style="{StaticResource RegularTextBox}" FontFamily="Calibri" FontSize="11"  x:Name="Logging_actions" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="11,82,0,0" Height="234" VerticalAlignment="Top" Width="667"  RenderTransformOrigin="0.398,0.307"    />
+        <TextBox Style="{StaticResource RegularTextBox}" FontFamily="Calibri" FontSize="11"  x:Name="Logging_actions" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="11,113,0,0" Height="203" VerticalAlignment="Top" Width="667"  RenderTransformOrigin="0.398,0.307"    />
         <Button x:Name="LoggingNewBut" Click="LoggingNewBut_Click" Content="Create New Log File" IsEnabled="True" HorizontalAlignment="Left" Height="26" Width="123" Margin="429,17,0,0" VerticalAlignment="Top"/>
         <Button x:Name="LoggingExistingBut" Click="LoggingExistingBut_Click" Content="Select Existing File" IsEnabled="True" HorizontalAlignment="Left" Height="26" Width="123" Margin="555,17,0,0" VerticalAlignment="Top"/>
-        <Button Content="Start Logging" x:Name="LoggingOnOffBut" HorizontalAlignment="Left" Margin="429,49,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="0.952,-0.051" Width="249" Click="LoggingOnOffBut_Click"/>
+        <Button Content="Start Logging" x:Name="LoggingOnOffBut" HorizontalAlignment="Left" Margin="429,81,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="0.952,-0.051" Width="249" Click="LoggingOnOffBut_Click"/>
         <TextBox x:Name="filepath" Text="[Please choose log path]" HorizontalAlignment="Left" Margin="11,17,0,0" VerticalAlignment="Top"  Width="412" RenderTransformOrigin="1.359,-7.032" Height="26"/>
         <Button x:Name="Close_But" FontFamily="Calibri" FontSize="11" Click="CloseBut_Click" Content="Close" IsEnabled="True" HorizontalAlignment="Left" Height="23" Width="82" Margin="596,324,0,0" VerticalAlignment="Top"/>
-
+        <ComboBox x:Name="logInterval" Height="23" VerticalAlignment="Bottom" Margin="431,0,47,323">
+            <ComboBoxItem IsSelected="True">Log Every 1 Sec</ComboBoxItem>
+            <ComboBoxItem >Log Every 5 Sec</ComboBoxItem>
+            <ComboBoxItem>Log Every 10 Sec</ComboBoxItem>
+            <ComboBoxItem>Log Every 15 Sec</ComboBoxItem>
+            <ComboBoxItem>Log Every 30 Sec</ComboBoxItem>
+            <ComboBoxItem>Log Every 60 Sec</ComboBoxItem>
+        </ComboBox>
     </Grid>
 </Window>

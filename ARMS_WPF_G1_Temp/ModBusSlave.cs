@@ -231,7 +231,7 @@ namespace ARMS_WPF_G1_Temp
         private int pMTECKiRealtimeRaw;
         private double pMTECKiRealtime;
         private double pMTECKdRealtime;
-        private int pMTECKdRealtimeRaw;
+        private int pMTECKdReatimeRaw;
         private double pMTECKdDefaultBoot;
         private int pMTECKdDefaultBootRaw;
         private int pMTECKiDefaultBootRaw;
@@ -258,8 +258,14 @@ namespace ARMS_WPF_G1_Temp
         private double manufacturerPMTECKpFactorDefault;
         private double manufacturerPMTECKdFactorDefault;
         private double manufacturerPMTECKiFactorDefault;
+        private int loggingInterval;
+        public int pMTECKdRealtimeRaw;
+        public int LoggingInterval
 
-
+        {
+            get { return loggingInterval; }
+            set { loggingInterval = value; }
+        }
         public UInt32 ModulationFrequencyRegVal
 
         {

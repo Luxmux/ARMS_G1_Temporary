@@ -286,7 +286,6 @@ namespace ARMS_WPF_G1_Temp
                 DefaultsBut.IsEnabled = false;
                 ExportBut_PM.IsEnabled = false;
 
-
                 fanSpeedSetPointEdit.IsEnabled = false;
                 List_PM.IsEnabled = false;
 
@@ -980,86 +979,89 @@ namespace ARMS_WPF_G1_Temp
         private void WriteLineToPublicLogFile(ModBusSlave mySlave)
         {
             string s = "";
+            DateTime dt = DateTime.Now;
 
-            s += DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year; s += ",";
-            s += DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second; s += ",";
-
-            s += mySlave.SledsAreOn.ToString(); s += ",";
-
-            s += mySlave.Sled1CurrentSetpoint.ToString("0.00"); s += ",";
-
-
-            s += (mySlave.ActualCurr1ReadVal * 1000).ToString("0.00"); s += ",";
-
-
-            if (mySlave.LampEnable == 0)
+            if (dt.Second % mySlave.LoggingInterval == 0) //only log on the second interval we want
             {
-                s += "Locked"; s += ",";
-            }
-            else
-            {
-                s += "Unlocked"; s += ",";
-            }
+                s += dt.Month + "/" + dt.Day + "/" + dt.Year; s += ",";
+                s += dt.Hour + ":" + dt.Minute + ":" + dt.Second; s += ",";
 
-            s += mySlave.BoardTemperatureN.ToString("0.00"); s += ",";
-            s += mySlave.ThermopileTemp.ToString("0.00"); s += ",";
+                s += mySlave.SledsAreOn.ToString(); s += ",";
 
-            s += mySlave.Gas1.ToString("0.000000"); s += ",";
-            s += mySlave.Gas2.ToString("0.000000"); s += ",";
-            s += mySlave.Gas3.ToString("0.000000"); s += ",";
-            s += mySlave.Gas4.ToString("0.000000"); s += ",";
-
-            s += mySlave.FanSpeed.ToString("0.00"); s += ",";
-            s += mySlave.FanSpeed.ToString("0.00"); s += ",";
+                s += mySlave.Sled1CurrentSetpoint.ToString("0.00"); s += ",";
 
 
-            //Raw Values
-            s += mySlave.SledsAreOn.ToString("0"); s += ",";
-
-            s += mySlave.Sled1CurrentSetpointRaw.ToString("0"); s += ",";
-
-            s += mySlave.Sled1CurrSenseRaw.ToString("0"); s += ",";
-
-            if (mySlave.LampEnable == 0)
-            {
-                s += "Locked"; s += ",";
-            }
-            else
-            {
-                s += "Unlocked"; s += ",";
-            }
-
-            s += mySlave.BoardTemperatureRaw.ToString("0"); s += ",";
-            s += mySlave.ThermopileTempRaw.ToString("0"); s += ",";        //We are putting board temperature raw into heat sink raw as well
+                s += (mySlave.ActualCurr1ReadVal * 1000).ToString("0.00"); s += ",";
 
 
-            s += mySlave.Gas1Raw.ToString("0"); s += ",";
-            s += mySlave.Gas2Raw.ToString("0"); s += ",";
-            s += mySlave.Gas3Raw.ToString("0"); s += ",";
-            s += mySlave.Gas4Raw.ToString("0"); s += ",";
-
-
-            s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
-            s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
-
-
-
-            mySlave.slavePublicLogFileFsWriter.Write(s + "\n");
-            mySlave.slavePublicLogFileFsWriter.Flush();
-
-            //Add the string to the slave's known strings
-            mySlave.CurrentPublicLogStrings.Add(s);
-
-            //If we're overflowing the chart, remove the first value
-            if (mySlave.CurrentPublicLogStrings.Count > MAX_CHART_VALUES)
-            {
-                mySlave.CurrentPublicLogStrings.RemoveAt(0);
-                if (PublicCurrentValues_Labels.Count > MAX_CHART_VALUES)
+                if (mySlave.LampEnable == 0)
                 {
-                    PublicCurrentValues_Labels.RemoveAt(0);
+                    s += "Locked"; s += ",";
+                }
+                else
+                {
+                    s += "Unlocked"; s += ",";
+                }
+
+                s += mySlave.BoardTemperatureN.ToString("0.00"); s += ",";
+                s += mySlave.ThermopileTemp.ToString("0.00"); s += ",";
+
+                s += mySlave.Gas1.ToString("0.000000"); s += ",";
+                s += mySlave.Gas2.ToString("0.000000"); s += ",";
+                s += mySlave.Gas3.ToString("0.000000"); s += ",";
+                s += mySlave.Gas4.ToString("0.000000"); s += ",";
+
+                s += mySlave.FanSpeed.ToString("0.00"); s += ",";
+                s += mySlave.FanSpeed.ToString("0.00"); s += ",";
+
+
+                //Raw Values
+                s += mySlave.SledsAreOn.ToString("0"); s += ",";
+
+                s += mySlave.Sled1CurrentSetpointRaw.ToString("0"); s += ",";
+
+                s += mySlave.Sled1CurrSenseRaw.ToString("0"); s += ",";
+
+                if (mySlave.LampEnable == 0)
+                {
+                    s += "Locked"; s += ",";
+                }
+                else
+                {
+                    s += "Unlocked"; s += ",";
+                }
+
+                s += mySlave.BoardTemperatureRaw.ToString("0"); s += ",";
+                s += mySlave.ThermopileTempRaw.ToString("0"); s += ",";        //We are putting board temperature raw into heat sink raw as well
+
+
+                s += mySlave.Gas1Raw.ToString("0"); s += ",";
+                s += mySlave.Gas2Raw.ToString("0"); s += ",";
+                s += mySlave.Gas3Raw.ToString("0"); s += ",";
+                s += mySlave.Gas4Raw.ToString("0"); s += ",";
+
+
+                s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
+                s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
+
+
+
+                mySlave.slavePublicLogFileFsWriter.Write(s + "\n");
+                mySlave.slavePublicLogFileFsWriter.Flush();
+
+                //Add the string to the slave's known strings
+                mySlave.CurrentPublicLogStrings.Add(s);
+
+                //If we're overflowing the chart, remove the first value
+                if (mySlave.CurrentPublicLogStrings.Count > MAX_CHART_VALUES)
+                {
+                    mySlave.CurrentPublicLogStrings.RemoveAt(0);
+                    if (PublicCurrentValues_Labels.Count > MAX_CHART_VALUES)
+                    {
+                        PublicCurrentValues_Labels.RemoveAt(0);
+                    }
                 }
             }
-
         }
 
       
