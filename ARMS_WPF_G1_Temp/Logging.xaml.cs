@@ -102,6 +102,13 @@ namespace ARMS_WPF_G1_Temp
 					LoggingNewBut.IsEnabled = false;
 					LoggingOnOffBut.IsEnabled = true;
 					PrintStringToLogging_actions("Logging to File: " + filepath.Text);
+
+					if (logInterval.SelectedIndex == 0) mySlave.LoggingInterval = 1;
+					if (logInterval.SelectedIndex == 1) mySlave.LoggingInterval = 5;
+					if (logInterval.SelectedIndex == 2) mySlave.LoggingInterval = 10;
+					if (logInterval.SelectedIndex == 3) mySlave.LoggingInterval = 15;
+					if (logInterval.SelectedIndex == 4) mySlave.LoggingInterval = 30;
+					if (logInterval.SelectedIndex == 5) mySlave.LoggingInterval = 60;
 				}
 			}
 			else
@@ -152,6 +159,13 @@ namespace ARMS_WPF_G1_Temp
 					LoggingNewBut.IsEnabled = false;
 					LoggingOnOffBut.IsEnabled = true;
 					PrintStringToLogging_actions("Logging to File: " + filepath.Text);
+
+					if (logInterval.SelectedIndex == 0) mySlave.LoggingInterval = 1;
+					if (logInterval.SelectedIndex == 1) mySlave.LoggingInterval = 5;
+					if (logInterval.SelectedIndex == 2) mySlave.LoggingInterval = 10;
+					if (logInterval.SelectedIndex == 3) mySlave.LoggingInterval = 15;
+					if (logInterval.SelectedIndex == 4) mySlave.LoggingInterval = 30;
+					if (logInterval.SelectedIndex == 5) mySlave.LoggingInterval = 60;
 				}
 			}
 			else
