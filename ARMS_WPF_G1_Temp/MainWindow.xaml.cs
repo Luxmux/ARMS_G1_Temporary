@@ -704,7 +704,7 @@ namespace ARMS_WPF_G1_Temp
             //mySlave.Capabilities[3]
             //mySlave.Capabilities[4]
             //mySlave.Capabilities[5]
-            mySlave.Capabilities[6] = (int)Math.Round(((readData[6]) * 2.5 / (65535.0 *1.5) * 1000), 1); //SLED 1: Max current limit & max manufacture default
+            mySlave.Capabilities[6] = (int)Math.Round(((readData[6]) * 2.5 * 1000  / (65535.0) ), 1); //SLED 1: Max current limit & max manufacture default
             this.Dispatcher.Invoke(() =>
             {
                 if (mySlave.Capabilities[0] > 0)
@@ -829,8 +829,8 @@ namespace ARMS_WPF_G1_Temp
                     //If SLEDs are on, enable track bars and update position
                     if (mySlave.Capabilities[0] != 0)
                     {
-                        Slider1Changed = readData2[0] * 2.5 / (65535.0) * 1000;
-                        Slider1_temp = readData2[0] * 2.5 / (65535.0) * 1000;
+                        Slider1Changed = readData2[0] * 2.5 * 1000 / (65535.0) ;
+                        Slider1_temp = readData2[0] * 2.5 * 1000 / (65535.0);
 
                     }
                 }
@@ -1188,8 +1188,8 @@ namespace ARMS_WPF_G1_Temp
                                             //If SLEDs are on, enable track bars and update position
                                             if (mySlave.Capabilities[0] != 0)
                                             {
-                                                Slider1Changed = readData2[0] * 2.5 / (65535.0) * 1000;
-                                                Slider1_temp = readData2[0] * 2.5 / (65535.0) * 1000;
+                                                Slider1Changed = readData2[0] * 2.5 * 1000 / (65535.0);
+                                                Slider1_temp = readData2[0] * 2.5 * 1000 / (65535.0);
                                             }
                                         }
                                         else
@@ -1395,7 +1395,7 @@ namespace ARMS_WPF_G1_Temp
                                     }
                                     else
                                     {
-                                        mySlave.ActualCurr1ReadVal = 2.5 * mySlave.Sled1CurrSenseRaw / (1.5 * 65535.0);
+                                        mySlave.ActualCurr1ReadVal = 5 * mySlave.Sled1CurrSenseRaw / 65535.0;
                                     }
                                     //Current Sense Values 
                                     if ((showRawValues))
@@ -1549,7 +1549,7 @@ namespace ARMS_WPF_G1_Temp
                                     if (mySlave.Locked == LOCKED)
                                     {
                                         readData = mbClient.ReadHoldingRegisters((byte)mySlave.ModbusID, 10, 1);
-                                        slider1TrackBar.Value = readData[0] * 2.5 / (65535.0) * 1000;
+                                        slider1TrackBar.Value = readData[0] * 2.5 * 1000 / (65535.0);
 
                                     }
 
