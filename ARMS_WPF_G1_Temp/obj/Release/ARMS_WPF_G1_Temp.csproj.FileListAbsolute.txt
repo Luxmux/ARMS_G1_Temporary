@@ -1,5 +1,6 @@
-C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\ARMS_WPF_G1_Temp.exe
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\ARMS_WPF_G1_Temp.exe.config
+C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\ARMS_WPF_G1_Temp.exe
+C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\ARMS_WPF_G1_Temp.pdb
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\LiveCharts.xml
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\LiveCharts.Wpf.xml
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Release\ARMS_WPF_G1_Temp.csprojAssemblyReference.cache
@@ -29,4 +30,3 @@ C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Release\A
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Release\ARMS_WPF_G1_Temp.csproj.CopyComplete
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Release\ARMS_WPF_G1_Temp.exe
 C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\obj\Release\ARMS_WPF_G1_Temp.pdb
-C:\Users\Lab18\source\Repos\ARMS_WPF_G1_Temporary\ARMS_WPF_G1_Temp\bin\Release\ARMS_WPF_G1_Temp.pdb

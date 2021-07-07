@@ -107,6 +107,10 @@ namespace ARMS_WPF_G1_Temp
         private double gas3;
         private int gas4Raw;
         private double gas4;
+        private int gas1ppRaw;
+        private int gas2ppRaw;
+        private int gas3ppRaw;
+        private int gas4ppRaw;
         private double sledTECFactoryDefaultTemp;
         private int existingModbusID;
         private string existingIP;
@@ -258,14 +262,14 @@ namespace ARMS_WPF_G1_Temp
         private double manufacturerPMTECKpFactorDefault;
         private double manufacturerPMTECKdFactorDefault;
         private double manufacturerPMTECKiFactorDefault;
-        private int loggingInterval;
+        //private int loggingInterval;
         public int pMTECKdRealtimeRaw;
-        public int LoggingInterval
+        //public int LoggingInterval
 
-        {
-            get { return loggingInterval; }
-            set { loggingInterval = value; }
-        }
+        //{
+        //    get { return loggingInterval; }
+        //    set { loggingInterval = value; }
+        //}
         public UInt32 ModulationFrequencyRegVal
 
         {
@@ -745,6 +749,32 @@ namespace ARMS_WPF_G1_Temp
             set { gas4 = value; }
 
         }
+
+        public int Gas1ppRaw
+        {
+            get { return gas1ppRaw; }
+            set { gas1ppRaw = value; }
+
+        }
+        public int Gas2ppRaw
+        {
+            get { return gas2ppRaw; }
+            set { gas2ppRaw = value; }
+
+        }
+        public int Gas3ppRaw
+        {
+            get { return gas3ppRaw; }
+            set { gas3ppRaw = value; }
+
+        }
+        public int Gas4ppRaw
+        {
+            get { return gas4ppRaw; }
+            set { gas4ppRaw = value; }
+
+        }
+
         public double SledTECCapacityDefaultRaw
         {
             get { return sledTECCapacityDefaultRaw; }

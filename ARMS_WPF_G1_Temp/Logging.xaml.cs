@@ -30,14 +30,48 @@ namespace ARMS_WPF_G1_Temp
             InitializeComponent();
 			this.mainWindow = _mainWindow;
 			mySlave = MainWindow.modbusSlaveList[mainWindow.selectedSlaveID];
-			if (mainWindow.loggingToFiles)
+			if (mainWindow.loggingToFiles && mainWindow.foundbestsled)
 			{
 				this.Dispatcher.Invoke(() =>
 				{
+					LoggingOnOffBut.Content = "Stop Logging";
+
 					LoggingExistingBut.IsEnabled = false;
 					LoggingNewBut.IsEnabled = false;
 					LoggingOnOffBut.IsEnabled = true;
+					logInterval.IsEnabled = false;
 				});
+
+				if (mainWindow.LoggingInterval == 1) logInterval.SelectedIndex = 0;
+				if (mainWindow.LoggingInterval == 5) logInterval.SelectedIndex = 1;
+				if (mainWindow.LoggingInterval == 10) logInterval.SelectedIndex = 2;
+				if (mainWindow.LoggingInterval == 15) logInterval.SelectedIndex = 3;
+				if (mainWindow.LoggingInterval == 30) logInterval.SelectedIndex = 4;
+				if (mainWindow.LoggingInterval == 60) logInterval.SelectedIndex = 5;
+
+				//Assign slave object properties
+				mySlave.SlavePublicLogFilePath = mainWindow.publicLogFilePathStrings[mySlave.SlaveID.ToString()];
+				filepath.Text = mySlave.SlavePublicLogFilePath;
+				PrintStringToLogging_actions("Logging to File: " + filepath.Text);
+
+				//Establish output streams
+				mySlave.slavePublicLogFileOutputStream = new FileStream(mainWindow.publicLogFilePathStrings[mySlave.SlaveID.ToString()], FileMode.Append, FileAccess.Write, FileShare.Read);
+				mySlave.slavePublicLogFileFsWriter = new StreamWriter(mySlave.slavePublicLogFileOutputStream);
+
+				//Establish input streams
+				mySlave.publicIStreamLeft = new FileStream(mainWindow.publicLogFilePathStrings[mySlave.SlaveID.ToString()], FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+				mySlave.publicIStreamRight = new FileStream(mainWindow.publicLogFilePathStrings[mySlave.SlaveID.ToString()], FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+				mySlave.publicFSReaderLeft = new StreamReader(mySlave.publicIStreamLeft);
+				mySlave.publicFSReaderRight = new StreamReader(mySlave.publicIStreamRight);
+
+				//Read past header line for left and right streams for both files
+				mySlave.publicFSReaderLeft.ReadLine();
+				mySlave.publicFSReaderRight.ReadLine();
+
+				mySlave.CurrentLeftIndex = -1;
+				mySlave.CurrentRightIndex = -1;
+
 			}
 			else
 			{
@@ -46,9 +80,10 @@ namespace ARMS_WPF_G1_Temp
 					LoggingExistingBut.IsEnabled = true;
 					LoggingNewBut.IsEnabled = true;
 					LoggingOnOffBut.IsEnabled = false;
+					logInterval.IsEnabled = true;
 				});
 			}
-			
+
 		}
 
 		private void LoggingNewBut_Click(object sender, RoutedEventArgs e)
@@ -61,6 +96,8 @@ namespace ARMS_WPF_G1_Temp
 				bool? res = fileDialog.ShowDialog();
 				if (res.HasValue && res.Value)
 				{
+				
+					
 					filepath.Text = fileDialog.FileName;
 					mainWindow.publicLogFilePathStrings.Remove(mySlave.SlaveID.ToString());
 					mainWindow.publicLogFilePathStrings.Add(mySlave.SlaveID.ToString(), fileDialog.FileName);
@@ -103,12 +140,12 @@ namespace ARMS_WPF_G1_Temp
 					LoggingOnOffBut.IsEnabled = true;
 					PrintStringToLogging_actions("Logging to File: " + filepath.Text);
 
-					if (logInterval.SelectedIndex == 0) mySlave.LoggingInterval = 1;
-					if (logInterval.SelectedIndex == 1) mySlave.LoggingInterval = 5;
-					if (logInterval.SelectedIndex == 2) mySlave.LoggingInterval = 10;
-					if (logInterval.SelectedIndex == 3) mySlave.LoggingInterval = 15;
-					if (logInterval.SelectedIndex == 4) mySlave.LoggingInterval = 30;
-					if (logInterval.SelectedIndex == 5) mySlave.LoggingInterval = 60;
+					if (logInterval.SelectedIndex == 0) mainWindow.LoggingInterval = 1;
+					if (logInterval.SelectedIndex == 1) mainWindow.LoggingInterval = 5;
+					if (logInterval.SelectedIndex == 2) mainWindow.LoggingInterval = 10;
+					if (logInterval.SelectedIndex == 3) mainWindow.LoggingInterval = 15;
+					if (logInterval.SelectedIndex == 4) mainWindow.LoggingInterval = 30;
+					if (logInterval.SelectedIndex == 5) mainWindow.LoggingInterval = 60;
 				}
 			}
 			else
@@ -160,12 +197,12 @@ namespace ARMS_WPF_G1_Temp
 					LoggingOnOffBut.IsEnabled = true;
 					PrintStringToLogging_actions("Logging to File: " + filepath.Text);
 
-					if (logInterval.SelectedIndex == 0) mySlave.LoggingInterval = 1;
-					if (logInterval.SelectedIndex == 1) mySlave.LoggingInterval = 5;
-					if (logInterval.SelectedIndex == 2) mySlave.LoggingInterval = 10;
-					if (logInterval.SelectedIndex == 3) mySlave.LoggingInterval = 15;
-					if (logInterval.SelectedIndex == 4) mySlave.LoggingInterval = 30;
-					if (logInterval.SelectedIndex == 5) mySlave.LoggingInterval = 60;
+					if (logInterval.SelectedIndex == 0) mainWindow.LoggingInterval = 1;
+					if (logInterval.SelectedIndex == 1) mainWindow.LoggingInterval = 5;
+					if (logInterval.SelectedIndex == 2) mainWindow.LoggingInterval = 10;
+					if (logInterval.SelectedIndex == 3) mainWindow.LoggingInterval = 15;
+					if (logInterval.SelectedIndex == 4) mainWindow.LoggingInterval = 30;
+					if (logInterval.SelectedIndex == 5) mainWindow.LoggingInterval = 60;
 				}
 			}
 			else
@@ -187,22 +224,26 @@ namespace ARMS_WPF_G1_Temp
 					LoggingExistingBut.IsEnabled = true;
 					LoggingNewBut.IsEnabled = true;
 					LoggingOnOffBut.IsEnabled = true;
-					if (logInterval.SelectedIndex == 0) mySlave.LoggingInterval = 1;
-					if (logInterval.SelectedIndex == 1) mySlave.LoggingInterval = 5;
-					if (logInterval.SelectedIndex == 2) mySlave.LoggingInterval = 10;
-					if (logInterval.SelectedIndex == 3) mySlave.LoggingInterval = 15;
-					if (logInterval.SelectedIndex == 4) mySlave.LoggingInterval = 30;
-					if (logInterval.SelectedIndex == 5) mySlave.LoggingInterval = 60;
+					logInterval.IsEnabled = true;
+					
 
 				}
 				else
 				{
-					mainWindow.loggingToFiles = true;
+					if (logInterval.SelectedIndex == 0) mainWindow.LoggingInterval = 1;
+					if (logInterval.SelectedIndex == 1) mainWindow.LoggingInterval = 5;
+					if (logInterval.SelectedIndex == 2) mainWindow.LoggingInterval = 10;
+					if (logInterval.SelectedIndex == 3) mainWindow.LoggingInterval = 15;
+					if (logInterval.SelectedIndex == 4) mainWindow.LoggingInterval = 30;
+					if (logInterval.SelectedIndex == 5) mainWindow.LoggingInterval = 60;
+
+					
 					LoggingOnOffBut.Content = "Stop Logging";
 					PrintStringToLogging_actions("Logging to File: " + filepath.Text);
 					LoggingExistingBut.IsEnabled = false;
 					LoggingNewBut.IsEnabled = false;
 					LoggingOnOffBut.IsEnabled = true;
+					logInterval.IsEnabled = false;
 
 					mainWindow.publicLogFilePathStrings.Remove(mySlave.SlaveID.ToString());
 					mainWindow.publicLogFilePathStrings.Add(mySlave.SlaveID.ToString(), filepath.Text);

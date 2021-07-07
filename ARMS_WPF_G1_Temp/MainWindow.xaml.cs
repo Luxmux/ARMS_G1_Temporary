@@ -117,6 +117,7 @@ namespace ARMS_WPF_G1_Temp
         public int linenumber = 1;
 
         public bool loggingToFiles = false;
+        public int LoggingInterval = 1;
         public bool showRawValues = false;
         private string[] logFileValues = new string[NUM_LOGFILE_FIELDS];
 
@@ -145,7 +146,8 @@ namespace ARMS_WPF_G1_Temp
         public Password passWindow;
         public About aboutWindow;
         public Defaults defaultsWindow;
-     
+
+        DateTime oldtime = DateTime.Now;
 
         public int Current1Old = 0;
 
@@ -175,6 +177,7 @@ namespace ARMS_WPF_G1_Temp
             aboutWindow = new About(this);
             aboutWindow.Visibility = Visibility.Hidden;
 
+            
 
             ConnectToBestSLED();
 
@@ -193,8 +196,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
             ValuesChart.Series.Add(new LineSeries
@@ -203,8 +206,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
             ValuesChart.Series.Add(new LineSeries
@@ -213,8 +216,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
             ValuesChart.Series.Add(new LineSeries
@@ -223,8 +226,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
             ValuesChart.Series.Add(new LineSeries
             {
@@ -232,8 +235,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
             ValuesChart.Series.Add(new LineSeries
@@ -242,8 +245,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
             ValuesChart.Series.Add(new LineSeries
             {
@@ -251,8 +254,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
             ValuesChart.Series.Add(new LineSeries
@@ -261,8 +264,8 @@ namespace ARMS_WPF_G1_Temp
                 Values = new ChartValues<double>(),
                 LineSmoothness = 0,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Circle,
-                StrokeThickness = 0.1,
+                PointGeometry = DefaultGeometries.None,
+                StrokeThickness = 1.5,
             });
 
 
@@ -360,6 +363,7 @@ namespace ARMS_WPF_G1_Temp
                         {
                             foundbestsled = true;
                             newconnection = true;
+                            break;
                         }
                     }
                     comtotry = Convert.ToInt32(port.Replace("COM", ""));
@@ -367,24 +371,25 @@ namespace ARMS_WPF_G1_Temp
                 }
             }
 
-                if (foundbestsled && newconnection)
-                {
+            if (foundbestsled && newconnection)
+            {
                 ModBusSlave newSlave = new ModBusSlave();
                 newSlave.SlaveID = comtotry;
                 modbusSlaveList[newSlave.SlaveID] = newSlave;
                 selectedSlaveID = comtotry; // set the active selected slave for all functions going forward
                 PrintStringToDiagnostics("ARMS G1 ID verified successfully");
                 UpdateFromCommsAsync("COM" + (comtotry).ToString(), "COM");
-                
+
                 this.Dispatcher.Invoke(() =>
                 {
-                    commsWindow.Visibility = Visibility.Hidden; 
+                    commsWindow.Visibility = Visibility.Hidden;
                     datedisplay.Content = DateTime.Now;
                 });
 
                 newconnection = false;
 
-                }
+                
+            }
         }
 
         private void ManualConnect()
@@ -494,6 +499,12 @@ namespace ARMS_WPF_G1_Temp
                     "Gas 3 Reading [V]," +
                     "Gas 4 Reading [V],";
 
+            s = s +
+                    "Gas 1 Peak-Peak," +
+                    "Gas 2 Peak-Peak," +
+                    "Gas 3 Peak-Peak," +
+                    "Gas 4 Peak-Peak,";
+
 
             s = s +
                 "Fan Speed Set [CFM]," +
@@ -519,6 +530,12 @@ namespace ARMS_WPF_G1_Temp
                 "Gas 2 Reading Raw," +
                 "Gas 3 Reading Raw," +
                 "Gas 4 Reading Raw,";
+
+            s = s +
+                    "Gas 1 Peak-Peak Raw," +
+                    "Gas 2 Peak-Peak Raw," +
+                    "Gas 3 Peak-Peak Raw," +
+                    "Gas 4 Peak-Peak Raw,";
 
 
             s = s +
@@ -661,6 +678,7 @@ namespace ARMS_WPF_G1_Temp
                         defaultsWindow.Visibility = Visibility.Hidden;
                     });
 
+                    
 
                 }
             }
@@ -981,8 +999,9 @@ namespace ARMS_WPF_G1_Temp
             string s = "";
             DateTime dt = DateTime.Now;
 
-            if (dt.Second % mySlave.LoggingInterval == 0) //only log on the second interval we want
+            if (dt.Second % LoggingInterval == 0 && dt.Second != oldtime.Second) //only log on the second interval we want
             {
+                oldtime = DateTime.Now;
                 s += dt.Month + "/" + dt.Day + "/" + dt.Year; s += ",";
                 s += dt.Hour + ":" + dt.Minute + ":" + dt.Second; s += ",";
 
@@ -1010,6 +1029,11 @@ namespace ARMS_WPF_G1_Temp
                 s += mySlave.Gas2.ToString("0.000000"); s += ",";
                 s += mySlave.Gas3.ToString("0.000000"); s += ",";
                 s += mySlave.Gas4.ToString("0.000000"); s += ",";
+
+                s += mySlave.Gas1ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas2ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas3ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas4ppRaw.ToString("0"); s += ",";
 
                 s += mySlave.FanSpeed.ToString("0.00"); s += ",";
                 s += mySlave.FanSpeed.ToString("0.00"); s += ",";
@@ -1039,6 +1063,11 @@ namespace ARMS_WPF_G1_Temp
                 s += mySlave.Gas2Raw.ToString("0"); s += ",";
                 s += mySlave.Gas3Raw.ToString("0"); s += ",";
                 s += mySlave.Gas4Raw.ToString("0"); s += ",";
+
+                s += mySlave.Gas1ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas2ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas3ppRaw.ToString("0"); s += ",";
+                s += mySlave.Gas4ppRaw.ToString("0"); s += ",";
 
 
                 s += mySlave.FanSpeedReadRaw.ToString("0"); s += ",";
@@ -1543,6 +1572,18 @@ namespace ARMS_WPF_G1_Temp
                                         Gas4Edit.Text = mySlave.Gas4.ToString("0.000000") + " V";
                                     }
 
+                                    readData = mbClient.ReadInputRegisters((byte)mySlave.ModbusID, 45, 4);
+                                    mySlave.Gas1ppRaw = readData[0];
+                                    mySlave.Gas2ppRaw = readData[1];
+                                    mySlave.Gas3ppRaw = readData[2];
+                                    mySlave.Gas4ppRaw = readData[3];
+
+                                    Gas1ppEdit.Text = mySlave.Gas1ppRaw.ToString("0");
+                                    Gas2ppEdit.Text = mySlave.Gas2ppRaw.ToString("0");
+                                    Gas3ppEdit.Text = mySlave.Gas3ppRaw.ToString("0");
+                                    Gas4ppEdit.Text = mySlave.Gas4ppRaw.ToString("0");
+
+                                    
 
                                     // if locked set slider to setcurrent
 
@@ -1564,10 +1605,11 @@ namespace ARMS_WPF_G1_Temp
                                     break;
                                 }
                             }
-
-
-                            if (loggingToFiles)
+                           
+                            int a = LoggingInterval;
+                            if (loggingToFiles && foundbestsled)
                             {
+                                
                                 WriteLineToPublicLogFile(mySlave);
                                 this.Dispatcher.Invoke(() =>
                                 {
@@ -1793,6 +1835,8 @@ namespace ARMS_WPF_G1_Temp
         {
             this.Dispatcher.Invoke(() =>
             {
+                
+
                 AboutBut.IsEnabled = true;
                 CommunicationBut.IsEnabled = true;
                 AdminBut.IsEnabled = false;
@@ -1818,6 +1862,12 @@ namespace ARMS_WPF_G1_Temp
 
                 setCurr1Edit.IsEnabled = false;
                 sledsOnIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+
+                //loggingToFiles = false;
+                LoggingIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
+
+                lampEnableBut.IsEnabled = false;
+                lampEnableIndicator.Fill = new SolidColorBrush(Color.FromRgb(205, 92, 92));
 
                 var alltextboxes = this.main_window_grid.Children.OfType<TextBox>();
                 foreach (var textbox in alltextboxes)
