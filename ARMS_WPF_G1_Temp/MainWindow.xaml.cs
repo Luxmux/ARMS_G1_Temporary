@@ -444,7 +444,7 @@ namespace ARMS_WPF_G1_Temp
                         newSlave.SlaveID = int.Parse(new_ComPort_string.Replace("COM", ""));
                         modbusSlaveList[newSlave.SlaveID] = newSlave;
                         selectedSlaveID = newSlave.SlaveID; // set the active selected slave for all functions going forward
-                        PrintStringToDiagnostics("Single-SLED ID verified successfully");
+                        PrintStringToDiagnostics("ARMS G1 ID verified successfully");
                         UpdateFromCommsAsync(new_ComPort_string, "COM");
                         datedisplay.Content = DateTime.Now;
                         commsWindow.Visibility = Visibility.Hidden;
@@ -900,7 +900,7 @@ namespace ARMS_WPF_G1_Temp
 
             
             looping = true;
-            PrintStringToDiagnostics("Connection to Single-SLED established.");
+            PrintStringToDiagnostics("Connection to ARMS G1 established.");
             Thread t = new Thread(StartLoopCycle);
             t.Start();
 
