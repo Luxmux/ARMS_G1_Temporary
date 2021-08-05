@@ -703,6 +703,8 @@ namespace ARMS_WPF_G1_Temp
 
             this.Dispatcher.Invoke(() =>
             {
+                lampEnableBut.IsEnabled = true;
+
                 AdminBut.IsEnabled = true;
                 LoggingBut.IsEnabled = true;
                 DefaultsBut.IsEnabled = true;
@@ -2019,6 +2021,8 @@ namespace ARMS_WPF_G1_Temp
                     //enable slider
                     whichMode = "1";
                     slider1TrackBar.IsEnabled =true;
+                    Slider1Changed = 0;
+                    Slider1_temp = 0;
                 }
                 else
                 {
